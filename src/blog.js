@@ -1,10 +1,11 @@
-var addBlogControllerConfig = ['$scope', AddBlogController];
-
-angular.module('blog', ['ngRoute', 'blog.types'])
+angular.module('blog', ['ngRoute', 'blog.controllers'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
-            .when('/:locale/media/blog', {templateUrl:'bower_components/blog.angular/partials/index.html', controller: addBlogControllerConfig});
+            .when('/:locale/media/blog', {templateUrl:'partials/blog/index.html'});
     }]);
+
+angular.module('blog.controllers', ['blog.types'])
+    .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController]);
 
 function AddBlogController($scope, blogTypesLoader) {
     $scope.blogTypes = blogTypesLoader();

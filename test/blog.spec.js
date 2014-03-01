@@ -1,13 +1,7 @@
-angular.module('test.module', ['blog.types'])
-    .controller('AddBlogController', addBlogControllerConfig);
-
-angular.module('blog.types', [])
-    .factory('blogTypesLoader', BlogTypeLoaderStubFactory);
-
 describe('blog', function () {
     var scope, ctrl;
 
-    beforeEach(module('test.module'));
+    beforeEach(module('blog.controllers'));
     beforeEach(function () {
         scope = {};
     });
@@ -22,6 +16,9 @@ describe('blog', function () {
         }));
     });
 });
+
+angular.module('blog.types', [])
+    .factory('blogTypesLoader', BlogTypeLoaderStubFactory);
 
 function BlogTypeLoaderStubFactory() {
     return function() {
