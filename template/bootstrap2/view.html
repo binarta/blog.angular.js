@@ -40,13 +40,26 @@
                         </div>
                     </div>
                     <div>
-                        <i class="fa fa-calendar"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
-                        |
-                        <span i18n code="blog.back" default="back" class="inline">
-                            <a href="#!/{{locale}}/blog">
-                                <i class="fa fa-caret-left"></i> {{var}}
-                            </a>
-                        </span>
+                        <ul class="inline">
+                            <li>
+                                <i class="fa fa-calendar fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                                |
+                            </li>
+                            <li ng-if="settings.useBlogTypes">
+                                <i class="fa fa-tag"></i>
+                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
+                                    {{var}}
+                                </i18n>
+                                |
+                            </li>
+                            <li>
+                                <span i18n code="blog.back" default="back" class="inline">
+                                    <a href="#!/{{locale}}/blog">
+                                        <i class="fa fa-caret-left"></i> {{var}}
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,22 @@
             <div ng-controller="AddBlogController">
                 <form ng-controller="AddToCatalogController"
                       ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})"
-                      ng-submit="item.blogType = 'blog';submit()">
+                      ng-submit="settings.useBlogTypes || (item.blogType = 'blog');submit()">
+
+                    <div class="control-group {{errorClassFor['blogType']}}" ng-if="settings.useBlogTypes">
+                        <label class="control-label" for="blogType">Type</label>
+                        <div class="controls">
+                            <select id="blogType" ng-model="item.blogType"
+                                ng-options="b.code as b.label for b in blogTypes">
+                                <option value=""> --- Please Select --- </option>
+                            </select>
+                            <span ng-repeat="v in violations['blogType']" class="help-block">
+                                <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                    {{var}}
+                                </i18n>
+                            </span>
+                        </div>
+                    </div>
 
                     <div class="control-group {{errorClassFor['defaultName']}}">
                         <label class="control-label" for="title">Title</label>

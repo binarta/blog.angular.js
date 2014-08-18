@@ -19,6 +19,8 @@ function BlogTemplateService(binTemplate) {
         restrict: 'A',
         template: '<div ng-include="templateUrl"></div>',
         link: function (scope, el, attrs) {
+            if (attrs.settings) scope.settings = scope.$eval(attrs.settings);
+
             var permission;
             if (attrs.blogTemplate == 'drafts') permission = 'blog.drafts.view';
             if (attrs.blogTemplate == 'add') permission = 'catalog.item.add';

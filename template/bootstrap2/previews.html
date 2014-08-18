@@ -5,7 +5,7 @@
                 context:'search',
                 filters:{
                     type:'blog',
-                    blogType:'blog',
+                    blogType: settings.blogType,
                     status:'published',
                     sortings: [
                         {on:'creationTime', orientation:'desc'}
@@ -15,9 +15,11 @@
                 subset:{count:5}})">
     <div class="row" ng-if="editing">
         <div class="span8 offset4">
-            <a class="btn btn-primary" href="#!/{{locale}}/blog/add">
-                <i class="fa fa-plus fa-fw"></i> Add new article
-            </a>
+            <div class="bin-add-article-button-wrapper">
+                <a class="btn btn-primary bin-add-article-button" href="#!/{{locale}}/blog/add">
+                    <i class="fa fa-plus fa-fw"></i> Add new article
+                </a>
+            </div>
             <hr>
         </div>
     </div>
@@ -64,7 +66,16 @@
                     </div>
                 </div>
                 <div>
-                    <i class="fa fa-calendar"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                    <ul class="inline">
+                        <li>
+                            <i class="fa fa-calendar fa-fw"></i>
+                            {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                        </li>
+                        <li ng-if="settings.useBlogTypes">
+                            <i class="fa fa-tag fa-fw"></i>
+                            <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">{{var}}</i18n>
+                        </li>
+                    </ul>
                 </div>
             </div>
 

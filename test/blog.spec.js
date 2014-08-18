@@ -46,6 +46,18 @@ describe('blog', function () {
         });
 
         describe('on link', function () {
+            describe('set template settings to scope', function () {
+                beforeEach(function () {
+                    directive.link(scope, null, {
+                        settings: '{setting: true}'
+                    });
+                });
+
+                it('should be on scope', function () {
+                    expect(scope.settings).toEqual({setting: true});
+                });
+            });
+
             describe('with template', function () {
                 beforeEach(function () {
                     directive.link(scope, null, {
