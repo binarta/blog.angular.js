@@ -1,0 +1,94 @@
+<div class="container bin-blog bin-blog-previews"
+     ng-controller="BinartaSearchController"
+     ng-init="init({
+                entity:'catalog-item',
+                context:'search',
+                filters:{
+                    type:'blog',
+                    blogType:'blog',
+                    status:'published',
+                    sortings: [
+                        {on:'creationTime', orientation:'desc'}
+                    ]
+                },
+                autosearch:true,
+                subset:{count:5}})">
+    <div class="row" ng-if="editing">
+        <div class="span8 offset4">
+            <a class="btn btn-primary" href="#!/{{locale}}/blog/add">
+                <i class="fa fa-plus fa-fw"></i> Add new article
+            </a>
+            <hr>
+        </div>
+    </div>
+
+    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
+        <div class="span4">
+            <div class="img-polaroid bin-article-image-wrapper">
+                <image-show ng-if="body"
+                            path="images{{item.id}}/cover.img"
+                            alt="blog post cover image"
+                            link="#!/{{locale}}/view{{item.id}}"
+                            image-class="bin-article-image">
+                </image-show>
+                <image-show ng-if="!body"
+                            path="images{{item.id}}/cover.img"
+                            alt="blog post cover image"
+                            image-class="bin-article-image">
+                </image-show>
+            </div>
+        </div>
+        <div class="span8">
+            <div class="well clearfix">
+                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="body">
+                    <a href="#!/{{locale}}/view{{item.id}}">
+                        {{var}}
+                    </a>
+                </h2>
+                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="!body">
+                    {{var}}
+                </h2>
+                <div class="pull-right text-right bin-article-buttons" ng-if="editing">
+                    <a class="btn btn-success" href="#!/{{locale}}/view{{item.id}}">
+                        <i class="fa fa-level-down fa-fw"></i> Go to view
+                    </a>
+                    <div checkpoint-permission-for="catalog.item.remove">
+                        <form ng-if="permitted" ng-controller="RemoveItemFromCatalogController"
+                              ng-init="init({noredirect:true,success:item.remove})">
+                            <button class="btn btn-danger" ng-click-confirm="submit(item.id)" ng-disabled="working">
+                                <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
+                                <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <i class="fa fa-calendar"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                </div>
+            </div>
+
+            <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
+
+            <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body">
+                <a href="#!/{{locale}}/view{{item.id}}" class="read-more" title="Read More">
+                    {{var}}
+                </a>
+            </span>
+        </div>
+    </article>
+
+    <div class="row">
+        <div class="span8 offset4" ng-if="results.length >= 5">
+            <hr>
+            <i18n class="inline" code="button.view.older.articles" default="View older articles">
+                <button type="button" class="btn btn-primary" ng-click="searchForMore()" ng-disabled="working"
+                        in-view="$inview ? searchForMore() : $inview">
+                    <span ng-if="!working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
+                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                    {{var}}
+                </button>
+            </i18n>
+        </div>
+    </div>
+</div>
