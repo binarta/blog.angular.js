@@ -25,7 +25,7 @@
                                 <i class="fa fa-calendar fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
                             </div>
                             <div class="span5">
-                                <a href="#!/{{locale}}/view{{item.id}}">{{item.defaultName}}</a>
+                                <a i18n read-only code="{{item.id}}" href="#!/{{locale}}/view{{item.id}}">{{var}}</a>
                             </div>
                         </div>
                     </div>
