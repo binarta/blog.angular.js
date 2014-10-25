@@ -3,14 +3,25 @@ angular.module('blog', ['ngRoute', 'blog.controllers', 'angularx'])
         $routeProvider
             .when('/blog', {templateUrl:'partials/blog/index.html'})
             .when('/:locale/blog', {templateUrl:'partials/blog/index.html'})
+            .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
+            .when('/:locale/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
     }])
     .directive('blogTemplate', ['binTemplate', BlogTemplateService]);
 
 angular.module('blog.controllers', ['blog.types'])
-    .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController]);
+    .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController])
+    .controller('BlogTypesController', ['$scope', 'blogTypesLoader', BlogTypesController]);
 
 function AddBlogController($scope, blogTypesLoader) {
     $scope.blogTypes = blogTypesLoader();
+}
+
+function BlogTypesController($scope, blogTypesLoader) {
+    $scope.blogTypes = blogTypesLoader();
+}
+
+function BlogTypeController($scope, $routeParams) {
+    $scope.blogType = $routeParams.blogType;
 }
 
 function BlogTemplateService(binTemplate) {

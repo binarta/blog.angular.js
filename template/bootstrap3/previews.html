@@ -1,0 +1,136 @@
+<div class="container bin-blog bin-blog-previews"
+     ng-controller="BinartaSearchController"
+     ng-init="init({
+                entity:'catalog-item',
+                context:'search',
+                filters:{
+                    type:'blog',
+                    blogType: settings.blogType,
+                    status:'published',
+                    sortings: [
+                        {on:'creationTime', orientation:'desc'}
+                    ]
+                },
+                autosearch:true,
+                subset:{count:5}})">
+    <div class="row" ng-if="editing">
+        <div class="col-sm-8 col-sm-offset-4">
+            <div class="bin-add-article-button-wrapper">
+                <a class="btn btn-primary bin-add-article-button" href="#!/{{locale}}/blog/add/article">
+                    <i class="fa fa-plus fa-fw"></i> Add new article
+                </a>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
+        <div class="col-sm-4">
+            <div class="bin-article-image-wrapper">
+                <image-show ng-if="body"
+                            path="images{{item.id}}/cover.img"
+                            alt="blog post cover image"
+                            link="#!/{{locale}}/view{{item.id}}"
+                            image-class="img-responsive">
+                </image-show>
+                <image-show ng-if="!body"
+                            path="images{{item.id}}/cover.img"
+                            alt="blog post cover image"
+                            image-class="img-responsive">
+                </image-show>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="well clearfix">
+                <div class="row">
+                    <div ng-class="editing ? 'col-sm-8' : 'col-sm-12'">
+                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}"
+                            ng-if="body && settings.i18nEnabled">
+                            <a href="#!/{{locale}}/view{{item.id}}">
+                                {{var}}
+                            </a>
+                        </h2>
+                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}"
+                            ng-if="!body && settings.i18nEnabled">
+                            {{var}}
+                        </h2>
+                        <h2 class="bin-article-title" ng-if="body && !settings.i18nEnabled">
+                            <a href="#!/{{locale}}/view{{item.id}}">
+                                {{item.defaultName}}
+                            </a>
+                        </h2>
+                        <h2 class="bin-article-title" ng-if="!body && !settings.i18nEnabled">
+                            {{item.defaultName}}
+                        </h2>
+                        <ul class="list-inline">
+                            <li>
+                                <i class="fa fa-clock-o fa-fw"></i>
+                                {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                            </li>
+                            <li ng-if="settings.useBlogTypes">
+                                <i class="fa fa-tag fa-fw"></i>
+                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">{{var}}</i18n>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4" ng-if="editing">
+                        <div class="pull-right bin-article-buttons">
+                            <div class="btn-group-vertical">
+                                <a class="btn btn-success" href="#!/{{locale}}/view{{item.id}}">
+                                    <i class="fa fa-level-down fa-fw"></i> Go to view
+                                </a>
+                                <button class="btn btn-danger"
+                                        checkpoint-permission-for="catalog.item.remove"
+                                        ng-show="permitted"
+                                        ng-controller="RemoveItemFromCatalogController"
+                                        ng-init="init({noredirect:true,success:item.remove})"
+                                        ng-click-confirm="submit(item.id)"
+                                        ng-disabled="working">
+                                    <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
+                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="settings.i18nEnabled">
+                <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
+            </div>
+            <div ng-if="!settings.i18nEnabled">
+                <p class="bin-article-lead" ng-bind-html="item.lead|trust"></p>
+            </div>
+
+            <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body">
+                <a href="#!/{{locale}}/view{{item.id}}" class="read-more" title="Read More">
+                    {{var}}
+                </a>
+            </span>
+        </div>
+        <div class="col-xs-8 col-sm-offset-4">
+            <hr>
+        </div>
+    </article>
+
+    <div class="row" ng-if="results.length == 0">
+        <div class="col-xs-12 text-center">
+            <p i18n code="blog.no.articles.found" default="No articles found...">{{var}}</p>
+        </div>
+    </div>
+
+    <div class="row" ng-if="results.length >= 5">
+        <div class="col-sm-8 col-sm-offset-4">
+            <hr>
+            <i18n class="inline" code="button.view.older.articles" default="View older articles">
+                <button type="button" class="btn btn-primary" ng-click="searchForMore()" ng-disabled="working"
+                        in-view="$inview ? searchForMore() : $inview">
+                    <span ng-if="!working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
+                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                    {{var}}
+                </button>
+            </i18n>
+        </div>
+    </div>
+</div>

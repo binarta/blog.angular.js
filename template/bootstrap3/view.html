@@ -1,0 +1,189 @@
+<div checkpoint-permission-for="blog.drafts.view">
+    <article class="container bin-blog bin-blog-view"
+             ng-if="(item.status != 'published' && permitted) || (item.status == 'published')">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="bin-article-image-wrapper">
+                    <image-show path="images{{item.id}}/cover.img"
+                                alt="blog post cover image"
+                                image-class="img-responsive">
+                    </image-show>
+                </div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="alert alert-info" ng-if="item.status != 'published'">
+                    <i class="fa fa-square fa-fw"></i> DRAFT
+                </div>
+
+                <div class="row">
+                    <div ng-class="editing ? 'col-sm-8' : 'col-sm-12'">
+                        <h2 class="inline bin-article-title" ng-if="settings.i18nEnabled"
+                            i18n code="{{item.id}}" default="{{item.id}}">
+                            {{var}}
+                        </h2>
+                        <h2 class="bin-article-title" ng-if="!settings.i18nEnabled">
+                            {{item.defaultName}}
+                        </h2>
+
+                        <ul class="list-inline">
+                            <li>
+                                <i class="fa fa-clock-o fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                            </li>
+                            <li ng-if="settings.useBlogTypes">
+                                <i class="fa fa-tag"></i>
+                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
+                                    <a href="#!/{{locale}}/blog/{{var}}">{{var}}</a>
+                                </i18n>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4" ng-if="editing">
+                        <div class="pull-right bin-article-buttons">
+                            <div class="btn-group-vertical" ng-if="item">
+                                <button class="btn btn-success"
+                                        ng-click="item.status = 'published'; update();"
+                                        ng-controller="UpdateCatalogItemController" ng-init="init(item)"
+                                        ng-if="item.status != 'published' && permitted"
+                                        ng-disabled="working">
+                                    <span ng-if="!working"><i class="fa fa-eye fa-fw"></i></span>
+                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                    Publish
+                                </button>
+                                <button class="btn btn-success"
+                                        ng-click="item.status = 'draft'; update();"
+                                        ng-controller="UpdateCatalogItemController" ng-init="init(item)"
+                                        ng-if="item.status == 'published' && permitted"
+                                        ng-disabled="working">
+                                    <span ng-if="!working"><i class="fa fa-eye-slash fa-fw"></i></span>
+                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                    Unpublish
+                                </button>
+                                <button class="btn btn-danger"
+                                        checkpoint-permission-for="catalog.item.remove"
+                                        ng-show="permitted"
+                                        ng-controller="RemoveItemFromCatalogController"
+                                        ng-init="init({redirect:locale + '/blog'})"
+                                        ng-click-confirm="submit(item.id)"
+                                        ng-disabled="working">
+                                    <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
+                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2" ng-if="!editing">
+                <div ng-if="settings.i18nEnabled">
+                    <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full"
+                       ng-bind-html="var|trust">
+                    </p>
+                </div>
+                <div ng-if="!settings.i18nEnabled">
+                    <p class="bin-article-lead" ng-bind-html="item.lead|trust">
+                    </p>
+                </div>
+
+                <div ng-if="settings.i18nEnabled">
+                    <i18n class="inline" code="{{item.id}}.body" editor="full">
+                        <span class="btn btn-success" ng-if="editing && !var">
+                            <i class="fa fa-plus fa-fw"></i> Add a body
+                        </span>
+                        <p class="bin-article-body" ng-if="var" ng-bind-html="var|trust">
+                        </p>
+                    </i18n>
+                </div>
+                <div ng-if="!settings.i18nEnabled">
+                    <span class="btn btn-success" ng-if="editing && !item.body">
+                        <i class="fa fa-plus fa-fw"></i> Add a body
+                    </span>
+                    <p class="bin-article-body" ng-if="item.body" ng-bind-html="item.body|trust">
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2" ng-if="editing">
+                <form ng-controller="UpdateCatalogItemController"
+                      ng-init="init(item)"
+                      ng-submit="update()"
+                      class="highlight-on-dirty">
+
+                    <div class="row" ng-if="settings.useBlogTypes">
+                        <div class="col-sm-4" ng-controller="BlogTypesController">
+                            <div class="form-group has-{{errorClassFor['blogType']}}">
+                                <label class="control-label" for="blogType">Type</label>
+                                <select id="blogType" class="form-control" ng-model="item.blogType"
+                                        ng-options="b.code as b.label for b in blogTypes">
+                                    <option value=""> --- Please Select --- </option>
+                                </select>
+                                    <span ng-repeat="v in violations['blogType']" class="help-block">
+                                        <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                            {{var}}
+                                        </i18n>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-{{errorClassFor['defaultName']}}">
+                        <label class="control-label" for="title">Title</label>
+                        <input type="text" id="title" ng-model="item.defaultName" class="form-control">
+                        <span ng-repeat="v in violations['defaultName']" class="help-block">
+                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                {{var}}
+                            </i18n>
+                        </span>
+                    </div>
+
+                    <div class="form-group has-{{errorClassFor['lead']}}">
+                        <label class="control-label" for="lead">Lead</label>
+                        <textarea id="lead" class="form-control" ui-tinymce="{
+                                    plugins: ['link fullscreen textcolor paste table'],
+                                    toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
+                                    theme_advanced_resizing: true,
+                                    theme_advanced_resizing_use_cookie : false,
+                                    height:'100',
+                                    menubar:false
+                                }" ng-model="item.lead"></textarea>
+                        <span ng-repeat="v in violations['lead']" class="help-block">
+                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                {{var}}
+                            </i18n>
+                        </span>
+                    </div>
+
+                    <div class="form-group has-{{errorClassFor['body']}}">
+                        <label class="control-label" for="body">Body</label>
+                        <textarea id="body" class="form-control" ui-tinymce="{
+                                    plugins: ['link fullscreen textcolor paste table'],
+                                    toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
+                                    theme_advanced_resizing: true,
+                                    theme_advanced_resizing_use_cookie : false,
+                                    height:'180',
+                                    menubar:false
+                                }" ng-model="item.body"></textarea>
+                        <span ng-repeat="v in violations['body']" class="help-block">
+                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                {{var}}
+                            </i18n>
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success" ng-disabled="unchanged || working">
+                            <span ng-if="!working"><i class="fa fa-check fa-fw"></i></span>
+                            <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-warning" ng-click="cancel()" ng-disabled="unchanged || working">
+                            <i class="fa fa-refresh fa-fw"></i> Undo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+</div>

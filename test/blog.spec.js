@@ -19,6 +19,28 @@ describe('blog', function () {
         }));
     });
 
+    describe('BlogTypesController', function () {
+        beforeEach(inject(function ($controller) {
+            ctrl = $controller(BlogTypesController, {$scope: scope})
+        }));
+
+        it('should expose blog types on scope', inject(function (blogTypesLoader) {
+            expect(scope.blogTypes).toEqual(blogTypesLoader());
+        }));
+    });
+
+    describe('BlogTypeController', function () {
+        var blogType = 'foo';
+
+        beforeEach(inject(function ($controller) {
+            ctrl = $controller(BlogTypeController, {$scope: scope, $routeParams: {blogType: blogType}})
+        }));
+
+        it('should expose blog type on scope', function () {
+            expect(scope.blogType).toEqual(blogType);
+        });
+    });
+
     describe('blog-template directive', function () {
         var html, scope, directive, templateSpy, templateArgs;
 
