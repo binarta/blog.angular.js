@@ -16,7 +16,10 @@
     <div class="row" ng-if="editing">
         <div class="col-sm-8 col-sm-offset-4">
             <div class="bin-add-article-button-wrapper">
-                <a class="btn btn-primary bin-add-article-button" href="#!/{{locale}}/blog/add/article">
+                <a ng-if="settings.multiLanguage" class="btn btn-primary bin-add-article-button" href="#!/{{locale}}/blog/add/article">
+                    <i class="fa fa-plus fa-fw"></i> Add new article
+                </a>
+                <a ng-if="!settings.multiLanguage" class="btn btn-primary bin-add-article-button" href="#!/blog/add/article">
                     <i class="fa fa-plus fa-fw"></i> Add new article
                 </a>
             </div>
@@ -27,10 +30,16 @@
     <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
         <div class="col-sm-4">
             <div class="bin-article-image-wrapper">
-                <image-show ng-if="body"
+                <image-show ng-if="body && settings.multiLanguage"
                             path="images{{item.id}}/cover.img"
                             alt="blog post cover image"
                             link="#!/{{locale}}/view{{item.id}}"
+                            image-class="img-responsive">
+                </image-show>
+                <image-show ng-if="body && !settings.multiLanguage"
+                            path="images{{item.id}}/cover.img"
+                            alt="blog post cover image"
+                            link="#!/view{{item.id}}"
                             image-class="img-responsive">
                 </image-show>
                 <image-show ng-if="!body"
@@ -46,7 +55,10 @@
                     <div ng-class="editing ? 'col-sm-8' : 'col-sm-12'">
                         <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}"
                             ng-if="body && settings.i18nEnabled">
-                            <a href="#!/{{locale}}/view{{item.id}}">
+                            <a ng-if="settings.multiLanguage" href="#!/{{locale}}/view{{item.id}}">
+                                {{var}}
+                            </a>
+                            <a ng-if="!settings.multiLanguage" href="#!/view{{item.id}}">
                                 {{var}}
                             </a>
                         </h2>
@@ -55,7 +67,10 @@
                             {{var}}
                         </h2>
                         <h2 class="bin-article-title" ng-if="body && !settings.i18nEnabled">
-                            <a href="#!/{{locale}}/view{{item.id}}">
+                            <a ng-if="settings.multiLanguage" href="#!/{{locale}}/view{{item.id}}">
+                                {{item.defaultName}}
+                            </a>
+                            <a ng-if="!settings.multiLanguage" href="#!/view{{item.id}}">
                                 {{item.defaultName}}
                             </a>
                         </h2>
@@ -76,7 +91,10 @@
                     <div class="col-sm-4" ng-if="editing">
                         <div class="pull-right bin-article-buttons">
                             <div class="btn-group-vertical">
-                                <a class="btn btn-success" href="#!/{{locale}}/view{{item.id}}">
+                                <a ng-if="settings.multiLanguage" class="btn btn-success" href="#!/{{locale}}/view{{item.id}}">
+                                    <i class="fa fa-level-down fa-fw"></i> Go to view
+                                </a>
+                                <a ng-if="!settings.multiLanguage" class="btn btn-success" href="#!/view{{item.id}}">
                                     <i class="fa fa-level-down fa-fw"></i> Go to view
                                 </a>
                                 <button class="btn btn-danger"
@@ -104,7 +122,10 @@
             </div>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body">
-                <a href="#!/{{locale}}/view{{item.id}}" class="read-more" title="Read More">
+                <a ng-if="settings.multiLanguage" href="#!/{{locale}}/view{{item.id}}" class="read-more" title="Read More">
+                    {{var}}
+                </a>
+                <a ng-if="!settings.multiLanguage" href="#!/view{{item.id}}" class="read-more" title="Read More">
                     {{var}}
                 </a>
             </span>

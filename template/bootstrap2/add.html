@@ -89,7 +89,10 @@
                                 <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                                 Add article
                             </button>
-                            <a class="btn btn-danger" href="#!/{{locale}}/blog">
+                            <a ng-if="settings.multiLanguage" class="btn btn-danger" href="#!/{{locale}}/blog">
+                                <i class="fa fa-times fa-fw"></i> Cancel
+                            </a>
+                            <a ng-if="!settings.multiLanguage" class="btn btn-danger" href="#!/blog">
                                 <i class="fa fa-times fa-fw"></i> Cancel
                             </a>
                         </div>

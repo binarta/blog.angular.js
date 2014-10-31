@@ -32,7 +32,8 @@
                             <li ng-if="settings.useBlogTypes">
                                 <i class="fa fa-tag"></i>
                                 <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
-                                    <a href="#!/{{locale}}/blog/{{var}}">{{var}}</a>
+                                    <a ng-if="settings.multiLanguage" href="#!/{{locale}}/blog/{{var}}">{{var}}</a>
+                                    <a ng-if="!settings.multiLanguage" href="#!/blog/{{var}}">{{var}}</a>
                                 </i18n>
                             </li>
                         </ul>
@@ -62,7 +63,7 @@
                                         checkpoint-permission-for="catalog.item.remove"
                                         ng-show="permitted"
                                         ng-controller="RemoveItemFromCatalogController"
-                                        ng-init="init({redirect:locale + '/blog'})"
+                                        ng-init="init({redirect:(locale =! 'default' ? locale : '') + '/blog'})"
                                         ng-click-confirm="submit(item.id)"
                                         ng-disabled="working">
                                     <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>

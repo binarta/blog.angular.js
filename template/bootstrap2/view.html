@@ -30,7 +30,7 @@
                         </form>
                         <div checkpoint-permission-for="catalog.item.remove">
                             <form ng-if="permitted" ng-controller="RemoveItemFromCatalogController"
-                                  ng-init="init({redirect:locale + '/blog'})">
+                                  ng-init="init({redirect:(locale != 'default' ? locale : '') + '/blog'})">
                                 <button class="btn btn-danger" ng-click-confirm="submit(item.id)" ng-disabled="working">
                                     <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
                                     <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
@@ -54,7 +54,10 @@
                             </li>
                             <li>
                                 <span i18n code="blog.back" default="back" class="inline">
-                                    <a href="#!/{{locale}}/blog">
+                                    <a ng-if="settings.multiLanguage" href="#!/{{locale}}/blog">
+                                        <i class="fa fa-caret-left"></i> {{var}}
+                                    </a>
+                                    <a ng-if="!settings.multiLanguage" href="#!/blog">
                                         <i class="fa fa-caret-left"></i> {{var}}
                                     </a>
                                 </span>
