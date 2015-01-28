@@ -2,10 +2,12 @@ angular.module('blog', ['ngRoute', 'blog.controllers', 'angularx'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
             .when('/add/blog', {templateUrl:'partials/blog/add.html'})
-            .when('/blog', {templateUrl:'partials/blog/index.html'})
-            .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
             .when('/:locale/add/blog', {templateUrl: 'partials/blog/add.html'})
+            .when('/blog/add', {templateUrl: 'partials/blog/add.html'})
+            .when('/:locale/blog/add', {templateUrl: 'partials/blog/add.html'})
+            .when('/blog', {templateUrl:'partials/blog/index.html'})
             .when('/:locale/blog', {templateUrl:'partials/blog/index.html'})
+            .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
             .when('/:locale/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
     }])
     .directive('blogTemplate', ['binTemplate', BlogTemplateService]);
