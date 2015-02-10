@@ -91,7 +91,7 @@ describe('blog', function () {
                     expect(templateArgs).toEqual({
                         scope: scope,
                         module: 'blog',
-                        name: 'template.html',
+                        name: 'blog-template.html',
                         permission: undefined
                     });
                 });
@@ -108,7 +108,7 @@ describe('blog', function () {
                     expect(templateArgs).toEqual({
                         scope: scope,
                         module: 'blog',
-                        name: 'drafts.html',
+                        name: 'blog-drafts.html',
                         permission: 'blog.drafts.view'
                     });
                 });
@@ -125,7 +125,7 @@ describe('blog', function () {
                     expect(templateArgs).toEqual({
                         scope: scope,
                         module: 'blog',
-                        name: 'add.html',
+                        name: 'blog-add.html',
                         permission: 'catalog.item.add'
                     });
                 });
