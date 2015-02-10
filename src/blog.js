@@ -43,7 +43,7 @@ function BlogTemplateService(binTemplate) {
             binTemplate.setTemplateUrl({
                 scope: scope,
                 module: 'blog',
-                name: 'blog-' + attrs.blogTemplate + '.html',
+                name: 'bin-blog-' + attrs.blogTemplate + '.html',
                 permission: permission
             });
         }
