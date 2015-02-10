@@ -1,93 +1,95 @@
-<div class="container bin-blog bin-blog-add">
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-            <div ng-controller="AddBlogController">
-                <form ng-controller="AddToCatalogController"
-                      ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})"
-                      ng-submit="settings.useBlogTypes || (item.blogType = 'blog');submit()">
+<div checkpoint-permission-for="catalog.item.add">
+    <div class="container bin-blog bin-blog-add" ng-if="permitted">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-controller="AddBlogController">
+                    <form ng-controller="AddToCatalogController"
+                          ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})"
+                          ng-submit="settings.useBlogTypes || (item.blogType = 'blog');submit()">
 
-                    <div class="row" ng-if="settings.useBlogTypes">
-                        <div class="col-sm-4">
-                            <div class="form-group has-{{errorClassFor['blogType']}}">
-                                <label class="control-label" for="blogType">Type</label>
-                                <select id="blogType" class="form-control" ng-model="item.blogType"
-                                    ng-options="b.code as b.label for b in blogTypes">
-                                    <option value=""> --- Please Select --- </option>
-                                </select>
-                                <span ng-repeat="v in violations['blogType']" class="help-block">
-                                    <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
-                                        {{var}}
-                                    </i18n>
-                                </span>
+                        <div class="row" ng-if="settings.useBlogTypes">
+                            <div class="col-sm-4">
+                                <div class="form-group has-{{errorClassFor['blogType']}}">
+                                    <label class="control-label" for="blogType">Type</label>
+                                    <select id="blogType" class="form-control" ng-model="item.blogType"
+                                        ng-options="b.code as b.label for b in blogTypes">
+                                        <option value=""> --- Please Select --- </option>
+                                    </select>
+                                    <span ng-repeat="v in violations['blogType']" class="help-block">
+                                        <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                            {{var}}
+                                        </i18n>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group has-{{errorClassFor['defaultName']}}">
-                        <label class="control-label" for="title">Title</label>
-                        <input type="text" id="title" ng-model="item.defaultName" class="form-control">
-                        <span ng-repeat="v in violations['defaultName']" class="help-block">
-                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
-                                {{var}}
-                            </i18n>
-                        </span>
-                    </div>
+                        <div class="form-group has-{{errorClassFor['defaultName']}}">
+                            <label class="control-label" for="title">Title</label>
+                            <input type="text" id="title" ng-model="item.defaultName" class="form-control">
+                            <span ng-repeat="v in violations['defaultName']" class="help-block">
+                                <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                    {{var}}
+                                </i18n>
+                            </span>
+                        </div>
 
-                    <div class="form-group has-{{errorClassFor['lead']}}">
-                        <label class="control-label" for="lead">Lead</label>
-                        <textarea id="lead" class="form-control" ui-tinymce="{
-                                plugins: ['link fullscreen textcolor paste table'],
-                                toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
-                                theme_advanced_resizing: true,
-                                theme_advanced_resizing_use_cookie : false,
-                                height:'100',
-                                menubar:false
-                            }" ng-model="item.lead"></textarea>
-                        <span ng-repeat="v in violations['lead']" class="help-block">
-                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
-                                {{var}}
-                            </i18n>
-                        </span>
-                    </div>
+                        <div class="form-group has-{{errorClassFor['lead']}}">
+                            <label class="control-label" for="lead">Lead</label>
+                            <textarea id="lead" class="form-control" ui-tinymce="{
+                                    plugins: ['link fullscreen textcolor paste table'],
+                                    toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
+                                    theme_advanced_resizing: true,
+                                    theme_advanced_resizing_use_cookie : false,
+                                    height:'100',
+                                    menubar:false
+                                }" ng-model="item.lead"></textarea>
+                            <span ng-repeat="v in violations['lead']" class="help-block">
+                                <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                    {{var}}
+                                </i18n>
+                            </span>
+                        </div>
 
-                    <div class="form-group has-{{errorClassFor['body']}}">
-                        <label class="control-label" for="body">Body</label>
-                        <textarea id="body" class="form-control" ui-tinymce="{
-                                plugins: ['link fullscreen textcolor paste table'],
-                                toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
-                                theme_advanced_resizing: true,
-                                theme_advanced_resizing_use_cookie : false,
-                                height:'180',
-                                menubar:false
-                            }" ng-model="item.body"></textarea>
-                        <span ng-repeat="v in violations['body']" class="help-block">
-                            <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
-                                {{var}}
-                            </i18n>
-                        </span>
-                    </div>
+                        <div class="form-group has-{{errorClassFor['body']}}">
+                            <label class="control-label" for="body">Body</label>
+                            <textarea id="body" class="form-control" ui-tinymce="{
+                                    plugins: ['link fullscreen textcolor paste table'],
+                                    toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
+                                    theme_advanced_resizing: true,
+                                    theme_advanced_resizing_use_cookie : false,
+                                    height:'180',
+                                    menubar:false
+                                }" ng-model="item.body"></textarea>
+                            <span ng-repeat="v in violations['body']" class="help-block">
+                                <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                    {{var}}
+                                </i18n>
+                            </span>
+                        </div>
 
-                    <div class="checkbox">
-                        <label>
-                            <input id="status" type="checkbox" ng-model="item.status"
-                                   ng-true-value="published"
-                                   ng-false-value="draft">
-                            Published
-                        </label>
-                    </div>
+                        <div class="checkbox">
+                            <label>
+                                <input id="status" type="checkbox" ng-model="item.status"
+                                       ng-true-value="published"
+                                       ng-false-value="draft">
+                                Published
+                            </label>
+                        </div>
 
-                    <button type="submit" class="btn btn-success" ng-disabled="working">
-                        <span ng-if="!working"><i class="fa fa-plus fa-fw"></i></span>
-                        <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                        Add article
-                    </button>
-                    <a ng-if="settings.multiLanguage" class="btn btn-danger" href="#!/{{locale}}/blog">
-                        <i class="fa fa-times fa-fw"></i> Cancel
-                    </a>
-                    <a ng-if="!settings.multiLanguage" class="btn btn-danger" href="#!/blog">
-                        <i class="fa fa-times fa-fw"></i> Cancel
-                    </a>
-                </form>
+                        <button type="submit" class="btn btn-success" ng-disabled="working">
+                            <span ng-if="!working"><i class="fa fa-plus fa-fw"></i></span>
+                            <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                            Add article
+                        </button>
+                        <a ng-if="settings.multiLanguage" class="btn btn-danger" href="#!/{{locale}}/blog">
+                            <i class="fa fa-times fa-fw"></i> Cancel
+                        </a>
+                        <a ng-if="!settings.multiLanguage" class="btn btn-danger" href="#!/blog">
+                            <i class="fa fa-times fa-fw"></i> Cancel
+                        </a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
