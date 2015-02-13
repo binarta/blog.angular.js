@@ -13,36 +13,30 @@
                 },
                 autosearch:true,
                 subset:{count:5}})">
-    <div class="row" ng-if="editing">
-        <div class="span8 offset4">
-            <div class="bin-add-article-button-wrapper">
-                <a ng-if="settings.multiLanguage" class="btn btn-primary bin-add-article-button" href="#!/{{locale}}/add/blog">
-                    <i class="fa fa-plus fa-fw"></i> Add new article
-                </a>
-                <a ng-if="!settings.multiLanguage" class="btn btn-primary bin-add-article-button" href="#!/add/blog">
-                    <i class="fa fa-plus fa-fw"></i> Add new article
-                </a>
+    <div checkpoint-permission-for="catalog.item.add">
+        <div class="row" ng-if="permitted">
+            <div class="span8 offset4">
+                <div class="bin-add-article-button-wrapper" i18n code="blog.article.add.new.button" default="Add new article" read-only>
+                    <a class="btn btn-primary bin-add-article-button"
+                       ng-href="#!{{localePrefix}}/add/blog">
+                        <i class="fa fa-plus fa-fw"></i> {{var}}
+                    </a>
+                </div>
+                <hr>
             </div>
-            <hr>
         </div>
     </div>
 
     <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
         <div class="span4">
-            <div class="img-polaroid bin-article-image-wrapper">
-                <image-show ng-if="body && settings.multiLanguage"
+            <div class="img-polaroid bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
+                <image-show ng-if="body || permitted"
                             path="images{{item.id}}/cover.img"
                             alt="blog post cover image"
-                            link="#!/{{locale}}/view{{item.id}}"
+                            link="#!{{localePrefix}}/view{{item.id}}"
                             image-class="bin-article-image">
                 </image-show>
-                <image-show ng-if="body && !settings.multiLanguage"
-                            path="images{{item.id}}/cover.img"
-                            alt="blog post cover image"
-                            link="#!/view{{item.id}}"
-                            image-class="bin-article-image">
-                </image-show>
-                <image-show ng-if="!body"
+                <image-show ng-if="!body && !permitted"
                             path="images{{item.id}}/cover.img"
                             alt="blog post cover image"
                             image-class="bin-article-image">
@@ -51,34 +45,15 @@
         </div>
         <div class="span8">
             <div class="well clearfix">
-                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="body">
-                    <a ng-if="settings.multiLanguage" href="#!/{{locale}}/view{{item.id}}">
+                <div checkpoint-permission-for="edit.mode">
+                    <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="body || permitted">
+                        <a ng-href="#!{{localePrefix}}/view{{item.id}}">
+                            {{var}}
+                        </a>
+                    </h2>
+                    <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="!body && !permitted">
                         {{var}}
-                    </a>
-                    <a ng-if="!settings.multiLanguage" href="#!/view{{item.id}}">
-                        {{var}}
-                    </a>
-                </h2>
-                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" ng-if="!body">
-                    {{var}}
-                </h2>
-                <div class="pull-right text-right bin-article-buttons" ng-if="editing">
-                    <a ng-if="settings.multiLanguage" class="btn btn-success" href="#!/{{locale}}/view{{item.id}}">
-                        <i class="fa fa-level-down fa-fw"></i> Go to view
-                    </a>
-                    <a ng-if="!settings.multiLanguage" class="btn btn-success" href="#!/view{{item.id}}">
-                        <i class="fa fa-level-down fa-fw"></i> Go to view
-                    </a>
-                    <div checkpoint-permission-for="catalog.item.remove">
-                        <form ng-if="permitted" ng-controller="RemoveItemFromCatalogController"
-                              ng-init="init({noredirect:true,success:item.remove})">
-                            <button class="btn btn-danger" ng-click-confirm="submit(item.id)" ng-disabled="working">
-                                <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
-                                <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                Remove
-                            </button>
-                        </form>
-                    </div>
+                    </h2>
                 </div>
                 <div>
                     <ul class="inline">
@@ -97,10 +72,7 @@
             <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body">
-                <a ng-if="settings.multiLanguage" href="#!/{{locale}}/view{{item.id}}" class="read-more" title="Read More">
-                    {{var}}
-                </a>
-                <a ng-if="!settings.multiLanguage" href="#!/view{{item.id}}" class="read-more" title="Read More">
+                <a class="read-more" ng-href="#!{{localePrefix}}/view{{item.id}}" title="Read More">
                     {{var}}
                 </a>
             </span>

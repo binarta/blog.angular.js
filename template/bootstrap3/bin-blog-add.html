@@ -5,15 +5,19 @@
                 <div ng-controller="AddBlogController">
                     <form ng-controller="AddToCatalogController"
                           ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})"
-                          ng-submit="settings.useBlogTypes || (item.blogType = 'blog');submit()">
+                          ng-submit="submit()">
+
+                        <div ng-if="item.type" ng-init="item.blogType = blogTypes[0].code"></div>
 
                         <div class="row" ng-if="settings.useBlogTypes">
                             <div class="col-sm-4">
                                 <div class="form-group has-{{errorClassFor['blogType']}}">
-                                    <label class="control-label" for="blogType">Type</label>
+                                    <label class="control-label" for="blogType"
+                                           i18n code="blog.article.add.type.label" default="Type" read-only>
+                                        {{var}}
+                                    </label>
                                     <select id="blogType" class="form-control" ng-model="item.blogType"
                                         ng-options="b.code as b.label for b in blogTypes">
-                                        <option value=""> --- Please Select --- </option>
                                     </select>
                                     <span ng-repeat="v in violations['blogType']" class="help-block">
                                         <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
@@ -25,7 +29,10 @@
                         </div>
 
                         <div class="form-group has-{{errorClassFor['defaultName']}}">
-                            <label class="control-label" for="title">Title</label>
+                            <label class="control-label" for="title"
+                                   i18n code="blog.article.add.title.label" default="Title" read-only>
+                                {{var}}
+                            </label>
                             <input type="text" id="title" ng-model="item.defaultName" class="form-control">
                             <span ng-repeat="v in violations['defaultName']" class="help-block">
                                 <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
@@ -35,7 +42,10 @@
                         </div>
 
                         <div class="form-group has-{{errorClassFor['lead']}}">
-                            <label class="control-label" for="lead">Lead</label>
+                            <label class="control-label" for="lead"
+                                   i18n code="blog.article.add.lead.label" default="Lead" read-only>
+                                {{var}}
+                            </label>
                             <textarea id="lead" class="form-control" ui-tinymce="{
                                     plugins: ['link fullscreen textcolor paste table'],
                                     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
@@ -52,7 +62,10 @@
                         </div>
 
                         <div class="form-group has-{{errorClassFor['body']}}">
-                            <label class="control-label" for="body">Body</label>
+                            <label class="control-label" for="body"
+                                   i18n code="blog.article.add.body.label" default="Body" read-only>
+                                {{var}}
+                            </label>
                             <textarea id="body" class="form-control" ui-tinymce="{
                                     plugins: ['link fullscreen textcolor paste table'],
                                     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
@@ -69,24 +82,24 @@
                         </div>
 
                         <div class="checkbox">
-                            <label>
+                            <label i18n code="blog.article.add.published.checkbox" default="Published" read-only>
                                 <input id="status" type="checkbox" ng-model="item.status"
                                        ng-true-value="published"
                                        ng-false-value="draft">
-                                Published
+                                {{var}}
                             </label>
                         </div>
 
                         <button type="submit" class="btn btn-success" ng-disabled="working">
                             <span ng-if="!working"><i class="fa fa-plus fa-fw"></i></span>
                             <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                            Add article
+                            <span class="inline" i18n code="blog.article.add.button" default="Add article" read-only>{{var}}</span>
                         </button>
-                        <a ng-if="settings.multiLanguage" class="btn btn-danger" href="#!/{{locale}}/blog">
-                            <i class="fa fa-times fa-fw"></i> Cancel
-                        </a>
-                        <a ng-if="!settings.multiLanguage" class="btn btn-danger" href="#!/blog">
-                            <i class="fa fa-times fa-fw"></i> Cancel
+                        <a class="btn btn-danger" ng-href="#!{{localePrefix}}/blog">
+                            <i class="fa fa-times fa-fw"></i>
+                            <span class="inline" i18n code="blog.article.cancel.button" default="Cancel" read-only>
+                                {{var}}
+                            </span>
                         </a>
                     </form>
                 </div>

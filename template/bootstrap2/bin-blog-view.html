@@ -3,67 +3,74 @@
         <article>
             <div class="span8 offset2">
                 <div class="well clearfix">
-                    <div class="alert alert-info" ng-if="item.status != 'published'">
-                        <i class="fa fa-square fa-fw"></i> DRAFT
+                    <div class="alert alert-info" ng-if="item.status != 'published'"
+                         i18n code="blog.article.draft.label" default="DRAFT" read-only>
+                        <i class="fa fa-square fa-fw"></i> {{var}}
                     </div>
                     <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}">
                         {{var}}
                     </h2>
-                    <div class="pull-right text-right bin-article-buttons" ng-if="editing">
-                        <form ng-if="item" ng-controller="UpdateCatalogItemController" ng-init="init(item)">
-                            <div ng-if="item.status != 'published'">
-                                <button class="btn btn-success" ng-click="item.status = 'published'; update();"
-                                        ng-disabled="working">
-                                    <span ng-if="!working"><i class="fa fa-eye fa-fw"></i></span>
-                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Publish
-                                </button>
-                            </div>
-                            <div ng-if="item.status == 'published'">
-                                <button class="btn btn-success" ng-click="item.status = 'draft'; update();"
-                                        ng-disabled="working">
-                                    <span ng-if="!working"><i class="fa fa-eye-slash fa-fw"></i></span>
-                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Unpublish
-                                </button>
-                            </div>
-                        </form>
-                        <div checkpoint-permission-for="catalog.item.remove">
-                            <form ng-if="permitted" ng-controller="RemoveItemFromCatalogController"
-                                  ng-init="init({redirect:(locale != 'default' ? locale : '') + '/blog'})">
-                                <button class="btn btn-danger" ng-click-confirm="submit(item.id)" ng-disabled="working">
-                                    <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
-                                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Remove
-                                </button>
+                    <div checkpoint-permission-for="edit.mode">
+                        <div class="pull-right text-right bin-article-buttons" ng-if="permitted">
+                            <form ng-if="item" ng-controller="UpdateCatalogItemController" ng-init="init(item)">
+                                <div ng-if="item.status != 'published'">
+                                    <button class="btn btn-success" ng-click="item.status = 'published'; update();"
+                                            ng-disabled="working">
+                                        <span ng-if="!working"><i class="fa fa-eye fa-fw"></i></span>
+                                        <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                        <span class="inline" i18n code="blog.article.publish.button" default="Publish" read-only>
+                                            {{var}}
+                                        </span>
+                                    </button>
+                                </div>
+                                <div ng-if="item.status == 'published'">
+                                    <button class="btn btn-success" ng-click="item.status = 'draft'; update();"
+                                            ng-disabled="working">
+                                        <span ng-if="!working"><i class="fa fa-eye-slash fa-fw"></i></span>
+                                        <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                        <span class="inline" i18n code="blog.article.unpublish.button" default="Unpublish" read-only>
+                                            {{var}}
+                                        </span>
+                                    </button>
+                                </div>
                             </form>
+                            <div checkpoint-permission-for="catalog.item.remove">
+                                <form ng-if="permitted" ng-controller="RemoveItemFromCatalogController"
+                                      ng-init="init({redirect:(locale != 'default' ? locale : '') + '/blog'})">
+                                    <i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
+                                        <button class="btn btn-danger" ng-click-confirm="submit(item.id)"
+                                                confirm-message="{{var}}" ng-if="var" ng-disabled="working">
+                                            <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
+                                            <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                            <span class="inline" i18n code="blog.article.remove.button" default="Remove" read-only>
+                                                {{var}}
+                                            </span>
+                                        </button>
+                                    </i18n>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <ul class="inline">
-                            <li>
-                                <i class="fa fa-calendar fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
-                                |
-                            </li>
-                            <li ng-if="settings.useBlogTypes">
-                                <i class="fa fa-tag"></i>
-                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
-                                    {{var}}
-                                </i18n>
-                                |
-                            </li>
-                            <li>
-                                <span i18n code="blog.back" default="back" class="inline">
-                                    <a ng-if="settings.multiLanguage" href="#!/{{locale}}/blog">
-                                        <i class="fa fa-caret-left"></i> {{var}}
-                                    </a>
-                                    <a ng-if="!settings.multiLanguage" href="#!/blog">
-                                        <i class="fa fa-caret-left"></i> {{var}}
-                                    </a>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="inline">
+                        <li>
+                            <i class="fa fa-calendar fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                            |
+                        </li>
+                        <li ng-if="settings.useBlogTypes">
+                            <i class="fa fa-tag"></i>
+                            <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
+                                {{var}}
+                            </i18n>
+                            |
+                        </li>
+                        <li>
+                            <span i18n code="blog.back" default="back" class="inline">
+                                <a ng-href="#!{{localePrefix}}/blog">
+                                    <i class="fa fa-caret-left"></i> {{var}}
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="span8 offset2">
@@ -73,7 +80,8 @@
 
                 <i18n class="inline" code="{{item.id}}.body" editor="full">
                     <span class="btn btn-success" ng-if="editing && !var">
-                        <i class="fa fa-plus fa-fw"></i> Add a body
+                        <i class="fa fa-plus fa-fw"></i>
+                        <span class="inline" i18n code="blog.article.add.body.button" default="Add a body" read-only>{{var}}</span>
                     </span>
                     <p class="bin-article-body" ng-if="var" ng-bind-html="var|trust">
                     </p>

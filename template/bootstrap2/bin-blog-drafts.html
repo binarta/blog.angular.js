@@ -1,5 +1,5 @@
 <div checkpoint-permission-for="blog.drafts.view">
-    <div ng-if="editing && permitted"
+    <div ng-if="permitted"
          ng-controller="BinartaSearchController"
          ng-init="init({
             entity:'catalog-item',
@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="span8 offset4">
                     <div class="well">
-                        <h2>Drafts</h2>
+                        <h2 i18n code="blog.drafts.title" default="Drafts" read-only>{{var}}</h2>
                         <div class="bin-draft clearfix" ng-repeat="item in results track by item.id">
                             <hr>
                             <div class="row">
@@ -26,8 +26,7 @@
                                     <i class="fa fa-calendar fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
                                 </div>
                                 <div class="span5">
-                                    <a ng-if="settings.multiLanguage" i18n read-only code="{{item.id}}" href="#!/{{locale}}/view{{item.id}}">{{var}}</a>
-                                    <a ng-if="!settings.multiLanguage" i18n read-only code="{{item.id}}" href="#!/view{{item.id}}">{{var}}</a>
+                                    <a i18n read-only code="{{item.id}}" ng-href="#!{{localePrefix}}/view{{item.id}}">{{var}}</a>
                                 </div>
                             </div>
                         </div>

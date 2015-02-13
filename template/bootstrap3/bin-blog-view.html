@@ -11,12 +11,13 @@
                 </div>
             </div>
             <div class="col-sm-8 col-sm-offset-2">
-                <div class="alert alert-info" ng-if="item.status != 'published'">
-                    <i class="fa fa-square fa-fw"></i> DRAFT
+                <div class="alert alert-info" ng-if="item.status != 'published'"
+                     i18n code="blog.article.draft.label" default="DRAFT" read-only>
+                    <i class="fa fa-square fa-fw"></i> {{var}}
                 </div>
 
-                <div class="row">
-                    <div ng-class="editing ? 'col-sm-8' : 'col-sm-12'">
+                <div class="row" checkpoint-permission-for="edit.mode">
+                    <div ng-class="permitted ? 'col-sm-8' : 'col-sm-12'">
                         <h2 class="inline bin-article-title" ng-if="settings.i18nEnabled"
                             i18n code="{{item.id}}" default="{{item.id}}">
                             {{var}}
@@ -32,13 +33,12 @@
                             <li ng-if="settings.useBlogTypes">
                                 <i class="fa fa-tag"></i>
                                 <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
-                                    <a ng-if="settings.multiLanguage" href="#!/{{locale}}/blog/{{var}}">{{var}}</a>
-                                    <a ng-if="!settings.multiLanguage" href="#!/blog/{{var}}">{{var}}</a>
+                                    <a ng-href="#!{{localePrefix}}/blog/{{var}}">{{var}}</a>
                                 </i18n>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-sm-4" ng-if="editing">
+                    <div class="col-sm-4" ng-if="permitted">
                         <div class="pull-right bin-article-buttons">
                             <div class="btn-group-vertical" ng-if="item">
                                 <button class="btn btn-success"
@@ -48,7 +48,9 @@
                                         ng-disabled="working">
                                     <span ng-if="!working"><i class="fa fa-eye fa-fw"></i></span>
                                     <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Publish
+                                    <span class="inline" i18n code="blog.article.publish.button" default="Publish" read-only>
+                                        {{var}}
+                                    </span>
                                 </button>
                                 <button class="btn btn-success"
                                         ng-click="item.status = 'draft'; update();"
@@ -57,7 +59,9 @@
                                         ng-disabled="working">
                                     <span ng-if="!working"><i class="fa fa-eye-slash fa-fw"></i></span>
                                     <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Unpublish
+                                    <span class="inline" i18n code="blog.article.unpublish.button" default="Unpublish" read-only>
+                                        {{var}}
+                                    </span>
                                 </button>
                                 <button class="btn btn-danger"
                                         checkpoint-permission-for="catalog.item.remove"
@@ -68,7 +72,9 @@
                                         ng-disabled="working">
                                     <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
                                     <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    Remove
+                                    <span class="inline" i18n code="blog.article.remove.button" default="Remove" read-only>
+                                        {{var}}
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -92,7 +98,8 @@
                 <div ng-if="settings.i18nEnabled">
                     <i18n class="inline" code="{{item.id}}.body" editor="full">
                         <span class="btn btn-success" ng-if="editing && !var">
-                            <i class="fa fa-plus fa-fw"></i> Add a body
+                            <i class="fa fa-plus fa-fw"></i>
+                            <span class="inline" i18n code="blog.article.add.body.button" default="Add a body" read-only>{{var}}</span>
                         </span>
                         <p class="bin-article-body" ng-if="var" ng-bind-html="var|trust">
                         </p>
@@ -100,7 +107,8 @@
                 </div>
                 <div ng-if="!settings.i18nEnabled">
                     <span class="btn btn-success" ng-if="editing && !item.body">
-                        <i class="fa fa-plus fa-fw"></i> Add a body
+                        <i class="fa fa-plus fa-fw"></i>
+                        <span class="inline" i18n code="blog.article.add.body.button" default="Add a body" read-only>{{var}}</span>
                     </span>
                     <p class="bin-article-body" ng-if="item.body" ng-bind-html="item.body|trust">
                     </p>
@@ -115,22 +123,27 @@
                     <div class="row" ng-if="settings.useBlogTypes">
                         <div class="col-sm-4" ng-controller="BlogTypesController">
                             <div class="form-group has-{{errorClassFor['blogType']}}">
-                                <label class="control-label" for="blogType">Type</label>
+                                <label class="control-label" for="blogType"
+                                       i18n code="blog.article.add.type.label" default="Type" read-only>
+                                    {{var}}
+                                </label>
                                 <select id="blogType" class="form-control" ng-model="item.blogType"
                                         ng-options="b.code as b.label for b in blogTypes">
-                                    <option value=""> --- Please Select --- </option>
                                 </select>
-                                    <span ng-repeat="v in violations['blogType']" class="help-block">
-                                        <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
-                                            {{var}}
-                                        </i18n>
-                                    </span>
+                                <span ng-repeat="v in violations['blogType']" class="help-block">
+                                    <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
+                                        {{var}}
+                                    </i18n>
+                                </span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group has-{{errorClassFor['defaultName']}}">
-                        <label class="control-label" for="title">Title</label>
+                        <label class="control-label" for="title"
+                               i18n code="blog.article.add.title.label" default="Title" read-only>
+                            {{var}}
+                        </label>
                         <input type="text" id="title" ng-model="item.defaultName" class="form-control">
                         <span ng-repeat="v in violations['defaultName']" class="help-block">
                             <i18n code="{{v}}" default="{{v}}" ng-if="v!='required'">
@@ -140,7 +153,8 @@
                     </div>
 
                     <div class="form-group has-{{errorClassFor['lead']}}">
-                        <label class="control-label" for="lead">Lead</label>
+                        <label class="control-label" for="lead"
+                               i18n code="blog.article.add.lead.label" default="Lead" read-only>{{var}}</label>
                         <textarea id="lead" class="form-control" ui-tinymce="{
                                     plugins: ['link fullscreen textcolor paste table'],
                                     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
@@ -157,7 +171,10 @@
                     </div>
 
                     <div class="form-group has-{{errorClassFor['body']}}">
-                        <label class="control-label" for="body">Body</label>
+                        <label class="control-label" for="body"
+                               i18n code="blog.article.add.body.label" default="Body" read-only>
+                            {{var}}
+                        </label>
                         <textarea id="body" class="form-control" ui-tinymce="{
                                     plugins: ['link fullscreen textcolor paste table'],
                                     toolbar: 'undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table | link | fullscreen',
@@ -177,10 +194,11 @@
                         <button type="submit" class="btn btn-success" ng-disabled="unchanged || working">
                             <span ng-if="!working"><i class="fa fa-check fa-fw"></i></span>
                             <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                            Save
+                            <span class="inline" i18n code="blog.article.update.button" default="Save" read-only>{{var}}</span>
                         </button>
                         <button type="button" class="btn btn-warning" ng-click="cancel()" ng-disabled="unchanged || working">
-                            <i class="fa fa-refresh fa-fw"></i> Undo
+                            <i class="fa fa-refresh fa-fw"></i>
+                            <span class="inline" i18n code="blog.article.undo.button" default="Undo" read-only>{{var}}</span>
                         </button>
                     </div>
                 </form>
