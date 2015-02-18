@@ -30,17 +30,10 @@
     <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
         <div class="span4">
             <div class="img-polaroid bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
-                <image-show ng-if="body || permitted"
-                            path="images{{item.id}}/cover.img"
-                            alt="blog post cover image"
-                            link="#!{{localePrefix}}/view{{item.id}}"
-                            image-class="bin-article-image">
-                </image-show>
-                <image-show ng-if="!body && !permitted"
-                            path="images{{item.id}}/cover.img"
-                            alt="blog post cover image"
-                            image-class="bin-article-image">
-                </image-show>
+                <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body || permitted">
+                    <img class="bin-article-image" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                </a>
+                <img class="bin-article-image" bin-image="images{{item.id}}/cover.img" alt="blog post cover image" ng-if="!body && !permitted">
             </div>
         </div>
         <div class="span8">

@@ -29,34 +29,24 @@
     <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
         <div class="col-sm-4">
             <div class="bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
-                <image-show ng-if="body || permitted"
-                            path="images{{item.id}}/cover.img"
-                            alt="blog post cover image"
-                            link="#!{{localePrefix}}/view{{item.id}}"
-                            image-class="img-responsive">
-                </image-show>
-                <image-show ng-if="!body && !permitted"
-                            path="images{{item.id}}/cover.img"
-                            alt="blog post cover image"
-                            image-class="img-responsive">
-                </image-show>
+                <span ng-if="body || permitted">
+                    <a ng-href="#!{{localePrefix}}/view{{item.id}}">
+                        <img class="img-responsive" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                    </a>
+                </span>
+                <span ng-if="!body && !permitted">
+                    <img class="img-responsive" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                </span>
             </div>
         </div>
         <div class="col-sm-8">
             <div class="well clearfix">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 class="inline bin-article-title" checkpoint-permission-for="edit.mode">
-                            <span ng-if="settings.i18nEnabled">
-                                <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body || permitted">
-                                    <span class="inline" i18n code="{{item.id}}" default="{{item.id}}">{{var}}</span>
-                                </a>
-                                <span ng-if="!body && ! permitted">{{var}}</span>
-                            </span>
-                            <span ng-if="!settings.i18nEnabled">
-                                <a href="#!{{localePrefix}}/view{{item.id}}" ng-if="body || permitted">{{item.defaultName}}</a>
-                                <span ng-if="!body && !permitted">{{item.defaultName}}</span>
-                            </span>
+                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}"
+                            checkpoint-permission-for="edit.mode">
+                            <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body || permitted">{{var}}</a>
+                            <span ng-if="!body && !permitted">{{var}}</span>
                         </h2>
                         <ul class="list-inline">
                             <li>
@@ -72,12 +62,7 @@
                 </div>
             </div>
 
-            <div ng-if="settings.i18nEnabled">
-                <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
-            </div>
-            <div ng-if="!settings.i18nEnabled">
-                <p class="bin-article-lead" ng-bind-html="item.lead|trust"></p>
-            </div>
+            <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body">
                 <a ng-href="#!{{localePrefix}}/view{{item.id}}" class="read-more" title="Read More">
@@ -85,7 +70,7 @@
                 </a>
             </span>
         </div>
-        <div class="col-xs-8 col-sm-offset-4">
+        <div class="col-sm-8 col-sm-offset-4">
             <hr>
         </div>
     </article>
