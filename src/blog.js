@@ -7,10 +7,10 @@ angular.module('blog', ['ngRoute', 'blog.controllers', 'angularx'])
             .when('/:locale/blog/add', {templateUrl: 'partials/blog/add.html'})
             .when('/blog', {templateUrl:'partials/blog/index.html'})
             .when('/:locale/blog', {templateUrl:'partials/blog/index.html'})
-            .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
-            .when('/:locale/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: BlogTypeController})
+            .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: ['$scope', 'blogTypesLoader', BlogTypesController]})
+            .when('/:locale/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: ['$scope', 'blogTypesLoader', BlogTypesController]})
     }])
-    .directive('blogTemplate', ['binTemplate', BlogTemplateService]);
+    .directive('blogTemplate', ['binTemplate', BlogTemplateDirectiveFactory]);
 
 angular.module('blog.controllers', ['blog.types'])
     .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController])
@@ -28,7 +28,7 @@ function BlogTypeController($scope, $routeParams) {
     $scope.blogType = $routeParams.blogType;
 }
 
-function BlogTemplateService(binTemplate) {
+function BlogTemplateDirectiveFactory(binTemplate) {
     return {
         scope: true,
         restrict: 'A',

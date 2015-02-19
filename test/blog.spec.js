@@ -52,7 +52,7 @@ describe('blog', function () {
                     templateArgs = args;
                 }
             };
-            directive = new BlogTemplateService(templateSpy);
+            directive = new BlogTemplateDirectiveFactory(templateSpy);
         }));
 
         it('restricted to attribute', function () {
