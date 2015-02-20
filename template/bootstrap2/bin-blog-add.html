@@ -89,8 +89,8 @@
                             <div class="controls">
                                 <label class="checkbox" i18n code="blog.article.add.published.checkbox" default="Published" read-only>
                                     <input id="status" class="custom-checkbox" type="checkbox" ng-model="item.status"
-                                           ng-true-value="published"
-                                           ng-false-value="draft">
+                                           ng-true-value="'published'"
+                                           ng-false-value="'draft'">
                                     {{var}}
                                 </label>
                             </div>
