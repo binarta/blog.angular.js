@@ -16,21 +16,23 @@
 
                     <div class="row" checkpoint-permission-for="edit.mode">
                         <div ng-class="permitted ? 'col-sm-8' : 'col-sm-12'">
-                            <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}">
-                                {{var}}
-                            </h2>
+                            <div class="bin-article-heading">
+                                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}">
+                                    {{var}}
+                                </h2>
 
-                            <ul class="list-inline">
-                                <li>
-                                    <i class="fa fa-clock-o fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
-                                </li>
-                                <li ng-if="settings.useBlogTypes">
-                                    <i class="fa fa-tag"></i>
-                                    <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
-                                        <a ng-href="#!{{localePrefix}}/blog/{{var}}">{{var}}</a>
-                                    </i18n>
-                                </li>
-                            </ul>
+                                <ul class="list-inline">
+                                    <li>
+                                        <i class="fa fa-clock-o fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                                    </li>
+                                    <li ng-if="settings.useBlogTypes">
+                                        <i class="fa fa-tag"></i>
+                                        <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
+                                            <a ng-href="#!{{localePrefix}}/blog/{{var}}">{{var}}</a>
+                                        </i18n>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="col-sm-4" ng-if="permitted">
                             <div class="pull-right bin-article-buttons"
