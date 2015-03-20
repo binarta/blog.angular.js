@@ -1,4 +1,4 @@
-angular.module('blog', ['ngRoute', 'blog.controllers', 'angularx'])
+angular.module('blog', ['ngRoute', 'blog.controllers', 'angularx', 'angularMoment'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
             .when('/add/blog', {templateUrl:'partials/blog/add.html'})

@@ -4,6 +4,7 @@ describe('blog', function () {
     beforeEach(module('blog.controllers'));
     beforeEach(module('blog'));
     angular.module('angularx', []);
+    angular.module('angularMoment', []);
 
     beforeEach(function () {
         scope = {};
