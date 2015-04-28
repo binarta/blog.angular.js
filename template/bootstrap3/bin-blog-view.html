@@ -17,7 +17,7 @@
                     <div class="row" checkpoint-permission-for="edit.mode">
                         <div ng-class="permitted ? 'col-sm-8' : 'col-sm-12'">
                             <div class="bin-article-heading">
-                                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}">
+                                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale>
                                     {{var}}
                                 </h2>
 
@@ -87,11 +87,11 @@
             </div>
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                    <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full"
+                    <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale
                        ng-bind-html="var|trust">
                     </p>
 
-                    <i18n code="{{item.id}}.body" editor="full-media">
+                    <i18n code="{{item.id}}.body" editor="full-media" no-locale>
                         <span class="btn btn-success" ng-if="editing && !var">
                             <i class="fa fa-plus fa-fw"></i>
                             <span class="inline" i18n code="blog.article.add.body.button" default="Add a body"

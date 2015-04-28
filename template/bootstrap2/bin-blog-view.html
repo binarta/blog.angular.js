@@ -7,7 +7,7 @@
                          i18n code="blog.article.draft.label" default="DRAFT" read-only>
                         <i class="fa fa-square fa-fw"></i> {{var}}
                     </div>
-                    <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}">
+                    <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale>
                         {{var}}
                     </h2>
                     <div checkpoint-permission-for="edit.mode">
@@ -74,11 +74,11 @@
                 </div>
             </div>
             <div class="span8 offset2">
-                <p class="bin-article-lead lead" i18n code="{{item.id}}.lead" editor="full"
+                <p class="bin-article-lead lead" i18n code="{{item.id}}.lead" editor="full" no-locale
                    ng-bind-html="var|trust">
                 </p>
 
-                <i18n class="inline" code="{{item.id}}.body" editor="full">
+                <i18n class="inline" code="{{item.id}}.body" editor="full" no-locale>
                     <span class="btn btn-success" ng-if="editing && !var">
                         <i class="fa fa-plus fa-fw"></i>
                         <span class="inline" i18n code="blog.article.add.body.button" default="Add a body" read-only>{{var}}</span>

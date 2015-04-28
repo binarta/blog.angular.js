@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only>
+    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only no-locale>
         <div class="col-sm-4">
             <div class="bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
                 <span ng-if="body != '' || permitted">
@@ -44,7 +44,7 @@
             <div class="well clearfix bin-article-heading">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}"
+                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale
                             checkpoint-permission-for="edit.mode">
                             <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body != '' || permitted">{{var}}</a>
                             <span ng-if="body == '' && !permitted">{{var}}</span>
@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-            <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
+            <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
                 <a ng-href="#!{{localePrefix}}/view{{item.id}}" class="read-more" title="Read More">
