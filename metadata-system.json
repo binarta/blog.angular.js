@@ -1,0 +1,69 @@
+{
+  "msgs":{
+    "nl":{
+      "blog.article.add.new.button": "Nieuw artikel",
+      "blog.drafts.title": "Drafts",
+      "blog.article.draft.label": "DRAFT",
+      "blog.article.publish.button": "Publiceer",
+      "blog.article.unpublish.button": "Verbergen",
+      "blog.article.remove.button": "Verwijderen",
+      "blog.article.remove.confirm": "Ben je zeker dat je dit artikel wilt verwijderen?",
+      "blog.article.add.body.button": "Voeg hoofdtekst toe",
+      "blog.article.add.type.label": "Type",
+      "blog.article.add.title.label": "Titel",
+      "blog.article.add.lead.label": "Inleiding",
+      "blog.article.add.body.label": "Hoofdtekst",
+      "blog.article.add.published.checkbox": "Gepubliceerd",
+      "blog.article.add.button": "Opslaan",
+      "blog.article.cancel.button": "Annuleren"
+    }, "en":{
+      "blog.article.add.new.button": "Add new article",
+      "blog.drafts.title": "Drafts",
+      "blog.article.draft.label": "DRAFT",
+      "blog.article.publish.button": "Publish",
+      "blog.article.unpublish.button": "Unpublish",
+      "blog.article.remove.button": "Remove",
+      "blog.article.remove.confirm": "Are you sure you want to remove this article?",
+      "blog.article.add.body.button": "Add body",
+      "blog.article.add.type.label": "Type",
+      "blog.article.add.title.label": "Title",
+      "blog.article.add.lead.label": "Lead",
+      "blog.article.add.body.label": "Body",
+      "blog.article.add.published.checkbox": "Published",
+      "blog.article.add.button": "Save",
+      "blog.article.cancel.button": "Cancel"
+    }, "fr":{
+      "blog.article.add.new.button": "Ajouter un nouvel article",
+      "blog.drafts.title": "Brouillon",
+      "blog.article.draft.label": "BROUILLON",
+      "blog.article.publish.button": "Publier",
+      "blog.article.unpublish.button": "Annuler la publication",
+      "blog.article.remove.button": "Supprimer",
+      "blog.article.remove.confirm": "Êtes-vous sûr de vouloir supprimer l'article?",
+      "blog.article.add.body.button": "Ajouter un article principal",
+      "blog.article.add.type.label": "Type",
+      "blog.article.add.title.label": "Titre",
+      "blog.article.add.lead.label": "Introduction",
+      "blog.article.add.body.label": "Texte principal",
+      "blog.article.add.published.checkbox": "Publié",
+      "blog.article.add.button": "Ajouter",
+      "blog.article.cancel.button": "Annuler"
+    }, "de":{
+      "blog.article.add.new.button": "Neuer Artikel",
+      "blog.drafts.title": "Entwürfe",
+      "blog.article.draft.label": "ENTWURF",
+      "blog.article.publish.button": "Veröffentlichen",
+      "blog.article.unpublish.button": "Verbergen",
+      "blog.article.remove.button": "Löschen",
+      "blog.article.remove.confirm": "Diesen Artikel wirklich löschen?",
+      "blog.article.add.body.button": "Haupttext hinzufügen",
+      "blog.article.add.type.label": "Typ",
+      "blog.article.add.title.label": "Titel",
+      "blog.article.add.lead.label": "Einleitung",
+      "blog.article.add.body.label": "Haupttext",
+      "blog.article.add.published.checkbox": "Veröffentlicht",
+      "blog.article.add.button": "Speichern",
+      "blog.article.cancel.button": "Stornieren"
+    }
+  }
+}
