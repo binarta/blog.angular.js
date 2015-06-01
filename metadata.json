@@ -98,7 +98,7 @@
       "blog.article.add.body.label": "Haupttext",
       "blog.article.add.published.checkbox": "Veröffentlicht",
       "blog.article.add.button": "Speichern",
-      "blog.article.cancel.button": "Stornieren",
+      "blog.article.cancel.button": "Abbrechen",
       "blog.no.articles.found": "Keine Artikel gefunden..."
     }
   }
