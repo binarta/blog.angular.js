@@ -15,7 +15,8 @@
       "blog.article.add.body.label": "Hoofdtekst",
       "blog.article.add.published.checkbox": "Gepubliceerd",
       "blog.article.add.button": "Opslaan",
-      "blog.article.cancel.button": "Annuleren"
+      "blog.article.cancel.button": "Annuleren",
+      "blog.article.main.language.restriction.message": "Op dit moment kan je nieuwe artikelen enkel in de hoofdtaal toevoegen."
     }, "en":{
       "blog.article.add.new.button": "Add new article",
       "blog.drafts.title": "Drafts",
@@ -31,7 +32,8 @@
       "blog.article.add.body.label": "Body",
       "blog.article.add.published.checkbox": "Published",
       "blog.article.add.button": "Save",
-      "blog.article.cancel.button": "Cancel"
+      "blog.article.cancel.button": "Cancel",
+      "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language."
     }, "fr":{
       "blog.article.add.new.button": "Ajouter un nouvel article",
       "blog.drafts.title": "Brouillon",
@@ -47,7 +49,8 @@
       "blog.article.add.body.label": "Texte principal",
       "blog.article.add.published.checkbox": "Publié",
       "blog.article.add.button": "Ajouter",
-      "blog.article.cancel.button": "Annuler"
+      "blog.article.cancel.button": "Annuler",
+      "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language."
     }, "de":{
       "blog.article.add.new.button": "Neuer Artikel",
       "blog.drafts.title": "Entwürfe",
@@ -63,7 +66,8 @@
       "blog.article.add.body.label": "Haupttext",
       "blog.article.add.published.checkbox": "Veröffentlicht",
       "blog.article.add.button": "Speichern",
-      "blog.article.cancel.button": "Abbrechen"
+      "blog.article.cancel.button": "Abbrechen",
+      "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language."
     }
   }
 }
