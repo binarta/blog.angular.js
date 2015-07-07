@@ -7,7 +7,7 @@
                     type:'blog',
                     blogType: settings.blogType,
                     status:'published',
-                    locale: 'default',
+                    locale: settings.multilingualism ? 'locale' : 'default',
                     sortings: [
                         {on:'creationTime', orientation:'desc'}
                     ]

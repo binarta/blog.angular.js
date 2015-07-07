@@ -7,7 +7,7 @@
             filters:{
                 type:'blog',
                 status:'draft',
-                locale: 'default',
+                locale: settings.multilingualism ? 'locale' : 'default',
                 sortings: [
                     {on:'creationTime', orientation:'desc'}
                 ]

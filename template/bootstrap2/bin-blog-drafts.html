@@ -8,7 +8,7 @@
                 type:'blog',
                 blogType: settings.blogType,
                 status:'draft',
-                locale: 'default',
+                locale: settings.localeFilter || 'default',
                 sortings: [
                     {on:'creationTime', orientation:'desc'}
                 ]
