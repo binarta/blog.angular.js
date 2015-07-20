@@ -16,10 +16,13 @@
                 subset:{count:5}})">
     <div checkpoint-permission-for="catalog.item.add">
         <div class="row" ng-if="permitted">
-            <div class="col-sm-8 col-sm-offset-4">
-                <div class="bin-add-article-button-wrapper" i18n code="blog.article.add.new.button" default="Add new article" read-only>
-                    <a class="btn btn-primary bin-add-article-button" ng-href="#!{{localePrefix}}/blog/add">
-                        <i class="fa fa-plus fa-fw"></i> {{var}}
+            <div class="col-sm-8 col-sm-offset-4" ng-controller="AddToCatalogController"
+                 ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})">
+                <div class="bin-add-article-button-wrapper" i18n code="blog.article.add.new.button" default="Add new article" read-only ng-controller="AddBlogController">
+                    <a class="btn btn-primary bin-add-article-button" href=""
+                       ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working">
+                        <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{var}}</span>
+                        <span ng-show="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                     </a>
                 </div>
                 <hr>
