@@ -17,7 +17,7 @@
     <div checkpoint-permission-for="catalog.item.add">
         <div class="row" ng-if="permitted">
             <div class="span8 offset4" ng-controller="AddToCatalogController"
-                 ng-init="init({partition:'/blog/', type:'blog', redirectToView:true})">
+                 ng-init="init({partition:'/blog/', type:'blog', redirectToView:true, editMode:true})">
                 <div class="bin-add-article-button-wrapper" i18n code="blog.article.add.new.button" default="Add new article" read-only ng-controller="AddBlogController">
                     <a class="btn btn-primary bin-add-article-button" href=""
                        ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working">
