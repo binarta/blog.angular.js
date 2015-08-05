@@ -91,16 +91,14 @@
                        ng-bind-html="var|trust">
                     </p>
 
-                    <i18n code="{{item.id}}.body" editor="full-media" no-locale>
-                        <span class="btn btn-success" ng-if="editing && !var">
+                    <p class="bin-article-body" i18n code="{{item.id}}.body" editor="full-media" no-locale>
+                        <span class="btn btn-success btn-block" ng-if="editing && !var">
                             <i class="fa fa-plus fa-fw"></i>
-                            <span class="inline" i18n code="blog.article.add.body.button" default="Add a body"
-                                  read-only>{{var}}</span>
+                            <span class="inline" i18n code="blog.article.add.body.button" read-only>{{var}}</span>
                         </span>
-
-                        <p class="bin-article-body" ng-if="var" ng-bind-html="var|trust">
-                        </p>
-                    </i18n>
+                        <span ng-if="var" ng-bind-html="var|trust">
+                        </span>
+                    </p>
                 </div>
             </div>
         </article>

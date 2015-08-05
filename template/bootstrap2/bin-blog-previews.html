@@ -18,9 +18,15 @@
         <div class="row" ng-if="permitted">
             <div class="span8 offset4" ng-controller="AddToCatalogController"
                  ng-init="init({partition:'/blog/', type:'blog', redirectToView:true, editMode:true})">
-                <div class="bin-add-article-button-wrapper" i18n code="blog.article.add.new.button" default="Add new article" read-only ng-controller="AddBlogController">
-                    <a class="btn btn-primary bin-add-article-button" href=""
-                       ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working">
+                <div class="bin-add-article-button-wrapper" ng-controller="AddBlogController">
+                    <div class="alert alert-info" ng-if="mainLocale != locale"
+                         i18n code="blog.article.main.language.restriction.message" read-only>
+                        <i class="fa fa-info-circle fa-fw"></i> {{var}} ({{mainLocale|toLanguageName}})
+                    </div>
+
+                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="mainLocale == locale"
+                       ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working"
+                       i18n code="blog.article.add.new.button" read-only>
                         <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{var}}</span>
                         <span ng-show="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                     </a>
