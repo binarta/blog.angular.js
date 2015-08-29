@@ -19,7 +19,9 @@
       "blog.article.main.language.restriction.message": "Op dit moment kan je nieuwe artikelen enkel in de hoofdtaal toevoegen.",
       "blog.article.default.title":"Dit is de titel van jouw artikel",
       "blog.article.default.lead":"Hier kan je een korte inleiding van het artikel schrijven",
-      "blog.article.default.body":"Hier kan je de inhoud van jouw artikel schrijven."
+      "blog.article.default.body":"Hier kan je de inhoud van jouw artikel schrijven.",
+      "blog.unavailable.message": "Upgrade your website to use our blog feature. Use this to add your articles, projects, teammates or whatever you like!",
+      "blog.upgrade.button": "Upgrade"
     }, "en":{
       "blog.article.add.new.button": "Add new article",
       "blog.drafts.title": "Drafts",
@@ -39,7 +41,9 @@
       "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language.",
       "blog.article.default.title":"This is the title of your article",
       "blog.article.default.lead":"Here you can write a short lead paragraph for your article",
-      "blog.article.default.body":"Here you can write the body of your article"
+      "blog.article.default.body":"Here you can write the body of your article",
+      "blog.unavailable.message": "Upgrade your website to use our blog feature. Use this to add your articles, projects, teammates or whatever you like!",
+      "blog.upgrade.button": "Upgrade"
     }, "fr":{
       "blog.article.add.new.button": "Ajouter un nouvel article",
       "blog.drafts.title": "Brouillon",
@@ -59,7 +63,9 @@
       "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language.",
       "blog.article.default.title":"Tel est le titre de votre article",
       "blog.article.default.lead":"Ici vous pouvez écrire une courte introduction à l'article",
-      "blog.article.default.body":"Ici vous pouvez écrire le contenu de votre article."
+      "blog.article.default.body":"Ici vous pouvez écrire le contenu de votre article.",
+      "blog.unavailable.message": "Upgrade your website to use our blog feature. Use this to add your articles, projects, teammates or whatever you like!",
+      "blog.upgrade.button": "Upgrade"
     }, "de":{
       "blog.article.add.new.button": "Neuer Artikel",
       "blog.drafts.title": "Entwürfe",
@@ -79,7 +85,9 @@
       "blog.article.main.language.restriction.message": "Currently you can only add new articles in the main language.",
       "blog.article.default.title":"Dies ist der Titel Ihres Artikels",
       "blog.article.default.lead":"Hier können Sie eine kurze Einführung in die Artikel zu schreiben",
-      "blog.article.default.body":"Hier können Sie den Inhalt Ihrer Artikel zu schreiben."
+      "blog.article.default.body":"Hier können Sie den Inhalt Ihrer Artikel zu schreiben.",
+      "blog.unavailable.message": "Upgrade your website to use our blog feature. Use this to add your articles, projects, teammates or whatever you like!",
+      "blog.upgrade.button": "Upgrade"
     }
   }
 }
