@@ -53,23 +53,13 @@
             <div class="well clearfix bin-article-heading">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 ng-if="::!settings.multilingualism" class="inline bin-article-title" checkpoint-permission-for="edit.mode">
+                        <h2 class="inline bin-article-title" checkpoint-permission-for="edit.mode">
                             <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
                                i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
                                 {{var}}
                             </a>
                             <span ng-if="body == '' && !permitted"
                                   i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
-                                {{var}}
-                            </span>
-                        </h2>
-                        <h2 ng-if="::settings.multilingualism" class="inline bin-article-title" checkpoint-permission-for="edit.mode">
-                            <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
-                               i18n code="{{::item.id}}" default="{{::item.id}}">
-                                {{var}}
-                            </a>
-                            <span ng-if="body == '' && !permitted"
-                                  i18n code="{{::item.id}}" default="{{::item.id}}">
                                 {{var}}
                             </span>
                         </h2>
@@ -87,8 +77,7 @@
                 </div>
             </div>
 
-            <p ng-if="::!settings.multilingualism" class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
-            <p ng-if="::settings.multilingualism" class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
+            <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
                 <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" class="read-more" title="Read More">
