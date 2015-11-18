@@ -19,12 +19,12 @@
             <div class="col-sm-8 col-sm-offset-4" ng-controller="AddToCatalogController"
                  ng-init="init({partition:'/blog/', type:'blog', redirectToView:true, editMode:true})">
                 <div class="bin-add-article-button-wrapper" ng-controller="AddBlogController">
-                    <div class="alert alert-info" ng-if="::mainLocale != locale"
+                    <div class="alert alert-info" ng-if="::mainLocale != locale && !settings.multilingualism"
                          i18n code="blog.article.main.language.restriction.message" read-only>
                         <i class="fa fa-info-circle fa-fw"></i> {{::var}} ({{::mainLocale|toLanguageName}})
                     </div>
 
-                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="::mainLocale == locale"
+                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="::mainLocale == locale || settings.multilingualism"
                        ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working"
                        i18n code="blog.article.add.new.button" read-only>
                         <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{::var}}</span>
@@ -53,13 +53,23 @@
             <div class="well clearfix bin-article-heading">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 class="inline bin-article-title" checkpoint-permission-for="edit.mode">
+                        <h2 ng-if="::!settings.multilingualism" class="inline bin-article-title" checkpoint-permission-for="edit.mode">
                             <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
                                i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
                                 {{var}}
                             </a>
                             <span ng-if="body == '' && !permitted"
                                   i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
+                                {{var}}
+                            </span>
+                        </h2>
+                        <h2 ng-if="::settings.multilingualism" class="inline bin-article-title" checkpoint-permission-for="edit.mode">
+                            <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
+                               i18n code="{{::item.id}}" default="{{::item.id}}">
+                                {{var}}
+                            </a>
+                            <span ng-if="body == '' && !permitted"
+                                  i18n code="{{::item.id}}" default="{{::item.id}}">
                                 {{var}}
                             </span>
                         </h2>
@@ -77,7 +87,8 @@
                 </div>
             </div>
 
-            <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
+            <p ng-if="::!settings.multilingualism" class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
+            <p ng-if="::settings.multilingualism" class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
                 <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" class="read-more" title="Read More">
