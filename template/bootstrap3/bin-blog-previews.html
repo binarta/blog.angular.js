@@ -19,15 +19,15 @@
             <div class="col-sm-8 col-sm-offset-4" ng-controller="AddToCatalogController"
                  ng-init="init({partition:'/blog/', type:'blog', redirectToView:true, editMode:true})">
                 <div class="bin-add-article-button-wrapper" ng-controller="AddBlogController">
-                    <div class="alert alert-info" ng-if="mainLocale != locale"
+                    <div class="alert alert-info" ng-if="::mainLocale != locale"
                          i18n code="blog.article.main.language.restriction.message" read-only>
-                        <i class="fa fa-info-circle fa-fw"></i> {{var}} ({{mainLocale|toLanguageName}})
+                        <i class="fa fa-info-circle fa-fw"></i> {{::var}} ({{::mainLocale|toLanguageName}})
                     </div>
 
-                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="mainLocale == locale"
+                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="::mainLocale == locale"
                        ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working"
                        i18n code="blog.article.add.new.button" read-only>
-                        <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{var}}</span>
+                        <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{::var}}</span>
                         <span ng-show="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                     </a>
                 </div>
@@ -36,16 +36,16 @@
         </div>
     </div>
 
-    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only no-locale>
+    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{::item.id}}.body" var="body" read-only no-locale>
         <div class="col-sm-4">
             <div class="bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
                 <span ng-if="body != '' || permitted">
-                    <a ng-href="#!{{localePrefix}}/view{{item.id}}">
-                        <img class="img-responsive" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                    <a ng-href="#!{{::localePrefix}}/view{{::item.id}}">
+                        <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image">
                     </a>
                 </span>
                 <span ng-if="body == '' && !permitted">
-                    <img class="img-responsive" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                    <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image">
                 </span>
             </div>
         </div>
@@ -53,9 +53,9 @@
             <div class="well clearfix bin-article-heading">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale
+                        <h2 class="inline bin-article-title" i18n code="{{::item.id}}" default="{{::item.id}}" no-locale
                             checkpoint-permission-for="edit.mode">
-                            <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body != '' || permitted">{{var}}</a>
+                            <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted">{{var}}</a>
                             <span ng-if="body == '' && !permitted">{{var}}</span>
                         </h2>
                         <ul class="list-inline">
@@ -72,10 +72,10 @@
                 </div>
             </div>
 
-            <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
+            <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
-                <a ng-href="#!{{localePrefix}}/view{{item.id}}" class="read-more" title="Read More">
+                <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" class="read-more" title="Read More">
                     {{var}}
                 </a>
             </span>

@@ -5,30 +5,30 @@
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="bin-article-image-wrapper">
-                        <img class="img-responsive" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
+                        <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image">
                     </div>
                 </div>
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="alert alert-info" ng-if="item.status != 'published'"
                          i18n code="blog.article.draft.label" default="DRAFT" read-only>
-                        <i class="fa fa-square fa-fw"></i> {{var}}
+                        <i class="fa fa-square fa-fw"></i> {{::var}}
                     </div>
 
                     <div class="row" checkpoint-permission-for="edit.mode">
                         <div ng-class="permitted ? 'col-sm-8' : 'col-sm-12'">
                             <div class="bin-article-heading">
-                                <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale>
+                                <h2 class="inline bin-article-title" i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
                                     {{var}}
                                 </h2>
 
                                 <ul class="list-inline">
                                     <li>
-                                        <i class="fa fa-clock-o fa-fw"></i> {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                                        <i class="fa fa-clock-o fa-fw"></i> {{::item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
                                     </li>
                                     <li ng-if="settings.useBlogTypes">
                                         <i class="fa fa-tag"></i>
                                         <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
-                                            <a ng-href="#!{{localePrefix}}/blog/{{var}}">{{var}}</a>
+                                            <a ng-href="#!{{::localePrefix}}/blog/{{var}}">{{var}}</a>
                                         </i18n>
                                     </li>
                                 </ul>
@@ -47,7 +47,7 @@
                                         <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                                     <span class="inline" i18n code="blog.article.publish.button" default="Publish"
                                           read-only>
-                                        {{var}}
+                                        {{::var}}
                                     </span>
                                     </button>
                                     <button class="btn btn-success"
@@ -59,7 +59,7 @@
                                         <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                                     <span class="inline" i18n code="blog.article.unpublish.button" default="Unpublish"
                                           read-only>
-                                        {{var}}
+                                        {{::var}}
                                     </span>
                                     </button>
                                     <button class="btn btn-danger"
@@ -68,14 +68,14 @@
                                             ng-controller="RemoveItemFromCatalogController"
                                             ng-init="init({redirect:(locale =! 'default' ? locale : '') + '/blog'})"
                                             ng-click-confirm="submit(item.id)"
-                                            confirm-message="{{var}}"
+                                            confirm-message="{{::var}}"
                                             ng-if="var"
                                             ng-disabled="working">
                                         <span ng-if="!working"><i class="fa fa-times fa-fw"></i></span>
                                         <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
                                         <span class="inline" i18n code="blog.article.remove.button" default="Remove"
                                               read-only>
-                                            {{var}}
+                                            {{::var}}
                                         </span>
                                     </button>
                                 </div>
@@ -87,14 +87,14 @@
             </div>
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                    <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale
+                    <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale
                        ng-bind-html="var|trust">
                     </p>
 
-                    <p class="bin-article-body" i18n code="{{item.id}}.body" editor="full-media" no-locale>
+                    <p class="bin-article-body" i18n code="{{::item.id}}.body" editor="full-media" no-locale>
                         <span class="btn btn-success btn-block" ng-if="editing && !var">
                             <i class="fa fa-plus fa-fw"></i>
-                            <span class="inline" i18n code="blog.article.add.body.button" read-only>{{var}}</span>
+                            <span class="inline" i18n code="blog.article.add.body.button" read-only>{{::var}}</span>
                         </span>
                         <span ng-if="var" ng-bind-html="var|trust">
                         </span>
