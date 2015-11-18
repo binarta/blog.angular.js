@@ -53,15 +53,20 @@
             <div class="well clearfix bin-article-heading">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2 class="inline bin-article-title" i18n code="{{::item.id}}" default="{{::item.id}}" no-locale
-                            checkpoint-permission-for="edit.mode">
-                            <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted">{{var}}</a>
-                            <span ng-if="body == '' && !permitted">{{var}}</span>
+                        <h2 class="inline bin-article-title" checkpoint-permission-for="edit.mode">
+                            <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
+                               i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
+                                {{var}}
+                            </a>
+                            <span ng-if="body == '' && !permitted"
+                                  i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
+                                {{var}}
+                            </span>
                         </h2>
                         <ul class="list-inline">
                             <li>
                                 <i class="fa fa-clock-o fa-fw"></i>
-                                {{item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
+                                {{::item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
                             </li>
                             <li ng-if="settings.useBlogTypes">
                                 <i class="fa fa-tag fa-fw"></i>
