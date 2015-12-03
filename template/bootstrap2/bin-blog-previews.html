@@ -73,9 +73,9 @@
 
             <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
 
-            <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
+            <span class="inline" i18n code="blog.read.more" default="Read More..." read-only ng-if="body != ''">
                 <a class="read-more" ng-href="#!{{localePrefix}}/view{{item.id}}" title="Read More">
-                    {{var}}
+                    {{::var}}
                 </a>
             </span>
         </div>

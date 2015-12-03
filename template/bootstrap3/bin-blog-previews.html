@@ -1,6 +1,6 @@
 <div class="container bin-blog bin-blog-previews"
-     ng-controller="BinartaSearchController"
-     ng-init="init({
+     ng-controller="BinartaSearchController as searchCtrl"
+     ng-init="searchCtrl.init({
                 entity:'catalog-item',
                 context:'search',
                 filters:{
@@ -13,6 +13,7 @@
                     ]
                 },
                 autosearch:true,
+                noMoreResultsNotification: false,
                 subset:{count:5}})">
     <div checkpoint-permission-for="catalog.item.add">
         <div class="row" ng-if="permitted">
@@ -24,19 +25,20 @@
                         <i class="fa fa-info-circle fa-fw"></i> {{::var}} ({{::mainLocale|toLanguageName}})
                     </div>
 
-                    <a class="btn btn-primary bin-add-article-button" href="" ng-if="::mainLocale == locale || settings.multilingualism"
-                       ng-click="item.blogType = blogTypes[0].code;submit()" ng-disabled="working"
-                       i18n code="blog.article.add.new.button" read-only>
+                    <button type="button" class="btn btn-primary bin-add-article-button" ng-disabled="working"
+                            ng-if="::mainLocale == locale || settings.multilingualism"
+                            ng-click="item.blogType = blogTypes[0].code;submit()"
+                            i18n code="blog.article.add.new.button" read-only>
                         <span ng-hide="working"><i class="fa fa-plus fa-fw"></i> {{::var}}</span>
                         <span ng-show="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
                 <hr>
             </div>
         </div>
     </div>
 
-    <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{::item.id}}.body" var="body" read-only no-locale>
+    <article class="row bin-article" ng-repeat="item in searchCtrl.results track by item.id" i18n code="{{::item.id}}.body" var="body" read-only no-locale>
         <div class="col-sm-4">
             <div class="bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
                 <span ng-if="body != '' || permitted">
@@ -55,12 +57,12 @@
                     <div class="col-sm-12">
                         <h2 class="inline bin-article-title" checkpoint-permission-for="edit.mode">
                             <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" ng-if="body != '' || permitted"
-                               i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
-                                {{var}}
+                               i18n code="{{::item.id}}" default="{{::item.id}}" read-only no-locale>
+                                {{::var}}
                             </a>
                             <span ng-if="body == '' && !permitted"
-                                  i18n code="{{::item.id}}" default="{{::item.id}}" no-locale>
-                                {{var}}
+                                  i18n code="{{::item.id}}" default="{{::item.id}}" read-only no-locale>
+                                {{::var}}
                             </span>
                         </h2>
                         <ul class="list-inline">
@@ -70,18 +72,18 @@
                             </li>
                             <li ng-if="settings.useBlogTypes">
                                 <i class="fa fa-tag fa-fw"></i>
-                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">{{var}}</i18n>
+                                <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}" read-only>{{::var}}</i18n>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
+            <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" read-only no-locale ng-bind-html="::var|trust"></p>
 
-            <span class="inline" i18n code="blog.read.more" default="Read More..." ng-if="body != ''">
+            <span i18n code="blog.read.more" read-only ng-if="body != ''">
                 <a ng-href="#!{{::localePrefix}}/view{{::item.id}}" class="read-more" title="Read More">
-                    {{var}}
+                    {{::var}}
                 </a>
             </span>
         </div>
@@ -90,23 +92,14 @@
         </div>
     </article>
 
-    <div class="row" ng-if="results.length == 0 && !working">
-        <div class="col-xs-12 text-center">
-            <p i18n code="blog.no.articles.found" default="No articles found...">{{var}}</p>
-        </div>
-    </div>
 
-    <div class="row" ng-if="results.length >= 5">
+    <div ng-if="searchCtrl.results.length == 0 && !searchCtrl.working">
+        <ng-include src="'search-for-more.html'"></ng-include>
+    </div>
+    <div class="row" ng-if="searchCtrl.results.length >= 5">
         <div class="col-sm-8 col-sm-offset-4">
             <hr>
-            <i18n class="inline" code="button.view.older.articles" default="View older articles">
-                <button type="button" class="btn btn-primary" ng-click="searchForMore()" ng-disabled="working"
-                        in-view="$inview ? searchForMore() : $inview">
-                    <span ng-if="!working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
-                    <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                    {{var}}
-                </button>
-            </i18n>
+            <ng-include src="'search-for-more.html'" ng-init="infiniteScrolling = true"></ng-include>
         </div>
     </div>
 </div>

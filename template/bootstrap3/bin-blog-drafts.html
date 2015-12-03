@@ -1,7 +1,7 @@
 <div checkpoint-permission-for="blog.drafts.view">
     <div ng-if="permitted"
-         ng-controller="BinartaSearchController"
-         ng-init="init({
+         ng-controller="BinartaSearchController as searchCtrl"
+         ng-init="searchCtrl.init({
             entity:'catalog-item',
             context:'search',
             filters:{
@@ -14,13 +14,14 @@
                 ]
             },
             autosearch:true,
+            noMoreResultsNotification: false,
             subset:{count:20}})">
-        <div class="container bin-blog bin-blog-drafts" ng-if="results.length != 0">
+        <div class="container bin-blog bin-blog-drafts" ng-if="searchCtrl.results.length != 0">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-4">
                     <div class="well">
                         <h2 i18n code="blog.drafts.title" default="Drafts" read-only>{{::var}}</h2>
-                        <div class="bin-draft clearfix" ng-repeat="item in results track by item.id">
+                        <div class="bin-draft clearfix" ng-repeat="item in searchCtrl.results track by item.id">
                             <hr>
                             <div class="row">
                                 <div class="col-xs-4">
@@ -33,12 +34,8 @@
                         </div>
 
                         <div ng-if="results.length >= 20">
-                            <button type="button" class="btn btn-primary" ng-click="searchForMore()" ng-disabled="working"
-                                    i18n code="button.view.older.articles" default="View older articles">
-                                <span ng-if="!working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
-                                <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                {{var}}
-                            </button>
+                            <hr>
+                            <ng-include src="'search-for-more.html'"></ng-include>
                         </div>
                     </div>
                 </div>
