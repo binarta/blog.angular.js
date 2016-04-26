@@ -39,28 +39,15 @@
                                  i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
                                 <div class="btn-group-vertical" ng-if="item">
                                     <button class="btn btn-success"
-                                            ng-click="item.status = 'published'; update();"
+                                            ng-click="item.status = (item.status == 'draft' ? 'published' : 'draft'); update();"
                                             ng-controller="UpdateCatalogItemController" ng-init="init(item)"
-                                            ng-if="item.status != 'published' && permitted"
                                             ng-disabled="working">
-                                        <span ng-if="!working"><i class="fa fa-eye fa-fw"></i></span>
-                                        <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    <span class="inline" i18n code="blog.article.publish.button" default="Publish"
-                                          read-only>
-                                        {{::var}}
-                                    </span>
-                                    </button>
-                                    <button class="btn btn-success"
-                                            ng-click="item.status = 'draft'; update();"
-                                            ng-controller="UpdateCatalogItemController" ng-init="init(item)"
-                                            ng-if="item.status == 'published' && permitted"
-                                            ng-disabled="working">
-                                        <span ng-if="!working"><i class="fa fa-eye-slash fa-fw"></i></span>
-                                        <span ng-if="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
-                                    <span class="inline" i18n code="blog.article.unpublish.button" default="Unpublish"
-                                          read-only>
-                                        {{::var}}
-                                    </span>
+                                        <span ng-show="working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                                        <span ng-hide="working"><i class="fa fa-eye fa-fw"></i></span>
+                                        <span ng-show="item.status == 'draft'" class="inline"
+                                              i18n code="blog.article.publish.button" default="Publish" read-only ng-bind="::var"></span>
+                                        <span ng-show="item.status == 'published'" class="inline"
+                                              i18n code="blog.article.unpublish.button" default="Unpublish" read-only ng-bind="::var"></span>
                                     </button>
                                     <button class="btn btn-danger"
                                             checkpoint-permission-for="catalog.item.remove"
