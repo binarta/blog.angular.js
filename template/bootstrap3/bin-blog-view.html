@@ -24,13 +24,13 @@
 
                                 <ul class="list-inline">
                                     <li>
+                                        <i class="fa fa-clock-o fa-fw"></i> {{::item.creationTime | amDateFormat:'LL'}}
                                     </li>
                                     <li ng-if="settings.useBlogTypes">
                                         <i class="fa fa-tag"></i>
                                         <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
                                             <a ng-href="#!{{::localePrefix}}/blog/{{var}}">{{var}}</a>
                                         </i18n>
-                                        <i class="fa fa-clock-o fa-fw"></i> {{::item.creationTime | amDateFormat:'LL'}}
                                     </li>
                                 </ul>
                             </div>
