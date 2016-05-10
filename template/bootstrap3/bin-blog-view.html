@@ -3,38 +3,39 @@
          ng-if="(item.status != 'published' && permitted) || (item.status == 'published')">
         <article class="bin-article">
             <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                     <div class="bin-article-image-wrapper">
                         <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image" seo-image>
                     </div>
                 </div>
-                <div class="col-sm-8 col-sm-offset-2">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                     <div class="alert alert-info" ng-if="item.status != 'published'"
                          i18n code="blog.article.draft.label" default="DRAFT" read-only>
                         <i class="fa fa-square fa-fw"></i> {{::var}}
                     </div>
 
-                    <div class="row" checkpoint-permission-for="edit.mode">
-                        <div ng-class="permitted ? 'col-sm-8' : 'col-sm-12'">
+                    <div class="row">
+                        <div class="col-xs-12" ng-class="editing ? 'col-sm-8' : 'col-sm-12'">
                             <div class="bin-article-heading">
-                                <h2 class="inline bin-article-title" i18n code="{{::item.id}}" default="{{::item.id}}" no-locale seo-title>
+                                <h2 class="inline bin-article-title"
+                                    i18n code="{{::item.id}}" default="{{::item.id}}" var="itemTitle" no-locale seo-title>
                                     {{var}}
                                 </h2>
 
                                 <ul class="list-inline">
                                     <li>
-                                        <i class="fa fa-clock-o fa-fw"></i> {{::item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
                                     </li>
                                     <li ng-if="settings.useBlogTypes">
                                         <i class="fa fa-tag"></i>
                                         <i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}">
                                             <a ng-href="#!{{::localePrefix}}/blog/{{var}}">{{var}}</a>
                                         </i18n>
+                                        <i class="fa fa-clock-o fa-fw"></i> {{::item.creationTime | amDateFormat:'LL'}}
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-sm-4" ng-if="permitted">
+                        <div class="col-xs-12 col-sm-4" ng-if="editing">
                             <div class="pull-right bin-article-buttons"
                                  i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
                                 <div class="btn-group-vertical" ng-if="item">
@@ -53,7 +54,7 @@
                                             checkpoint-permission-for="catalog.item.remove"
                                             ng-show="permitted"
                                             ng-controller="RemoveItemFromCatalogController"
-                                            ng-init="init({redirect:(locale =! 'default' ? locale : '') + '/blog'})"
+                                            ng-init="init({redirect:item.partition})"
                                             ng-click-confirm="submit(item.id)"
                                             confirm-message="{{::var}}"
                                             ng-if="var"
@@ -73,12 +74,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" no-locale
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                    <p class="bin-article-lead" i18n code="{{::item.id}}.lead" var="itemLead" editor="full" no-locale
                        ng-bind-html="var|trust" seo-description>
                     </p>
 
-                    <p class="bin-article-body" i18n code="{{::item.id}}.body" editor="full-media" no-locale>
+                    <p class="bin-article-body" i18n code="{{::item.id}}.body" var="itemBody" editor="full-media" no-locale>
                         <span class="btn btn-success btn-block" ng-if="editing && !var">
                             <i class="fa fa-plus fa-fw"></i>
                             <span class="inline" i18n code="blog.article.add.body.button" read-only>{{::var}}</span>
@@ -91,9 +92,9 @@
         </article>
 
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <hr>
-                <a ng-href="#!{{::localePrefix}}/blog" i18n code="blog.back" read-only>
+                <a ng-href="{{item.partition | i18nRoute}}" i18n code="blog.back" read-only>
                     <i class="fa fa-angle-left fa-fw"></i> {{::var}}
                 </a>
             </div>
