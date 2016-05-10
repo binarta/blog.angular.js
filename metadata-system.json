@@ -2,6 +2,7 @@
   "msgs":{
     "nl":{
       "blog.article.add.new.button": "Voeg nieuw artikel toe",
+      "blog.article.add.first.button": "Voeg eerste artikel toe",
       "blog.drafts.title": "Drafts",
       "blog.article.draft.label": "DRAFT",
       "blog.article.publish.button": "Publiceer",
@@ -27,6 +28,7 @@
       "blog.view.all.articles": "Bekijk alle artikelen"
     }, "en":{
       "blog.article.add.new.button": "Add new article",
+      "blog.article.add.first.button": "Add first article",
       "blog.drafts.title": "Drafts",
       "blog.article.draft.label": "DRAFT",
       "blog.article.publish.button": "Publish",
@@ -52,6 +54,7 @@
       "blog.view.all.articles": "View all articles"
     }, "fr":{
       "blog.article.add.new.button": "Ajouter un nouvel article",
+      "blog.article.add.first.button": "Ajouter premier article",
       "blog.drafts.title": "Brouillon",
       "blog.article.draft.label": "BROUILLON",
       "blog.article.publish.button": "Publier",
@@ -77,6 +80,7 @@
       "blog.view.all.articles": "View all articles"
     }, "de":{
       "blog.article.add.new.button": "Neuer Artikel",
+      "blog.article.add.first.button": "Add first article",
       "blog.drafts.title": "Entwürfe",
       "blog.article.draft.label": "ENTWURF",
       "blog.article.publish.button": "Veröffentlichen",

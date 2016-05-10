@@ -1,43 +1,28 @@
-<div checkpoint-permission-for="blog.drafts.view">
-    <div ng-if="permitted"
-         ng-controller="BinartaSearchController as searchCtrl"
-         ng-init="searchCtrl.init({
-            entity:'catalog-item',
-            context:'search',
-            filters:{
-                type:'blog',
-                blogType: settings.blogType,
-                status:'draft',
-                locale: settings.multilingualism ? 'locale' : 'default',
-                sortings: [
-                    {on:'creationTime', orientation:'desc'}
-                ]
-            },
-            autosearch:true,
-            noMoreResultsNotification: false,
-            subset:{count:20}})">
-        <div class="container bin-blog bin-blog-drafts" ng-if="searchCtrl.results.length != 0">
-            <div class="row">
-                <div class="col-sm-8 col-sm-offset-4">
-                    <div class="well">
-                        <h2 i18n code="blog.drafts.title" default="Drafts" read-only>{{::var}}</h2>
-                        <div class="bin-draft clearfix" ng-repeat="item in searchCtrl.results track by item.id">
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <i class="fa fa-calendar fa-fw"></i> {{::item.creationTime | amDateFormat:'MMMM DD, YYYY'}}
-                                </div>
-                                <div class="col-xs-8">
-                                    <a i18n read-only no-locale code="{{::item.id}}" ng-href="#!{{::localePrefix}}/view{{::item.id}}">{{::var}}</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="results.length >= 20">
-                            <hr>
-                            <ng-include src="'search-for-more.html'"></ng-include>
+<div ng-if="allowed && permitted && editing"
+     ng-controller="BinartaSearchController as draftsCtrl"
+     ng-init="draftsCtrl.init({
+        settings: 'blog',
+        filters:{partition: partition, status:'draft', locale:locale},
+        subset:{count:20}})">
+    <div class="bin-blog bin-blog-drafts" ng-if="draftsCtrl.results.length != 0">
+        <div class="panel panel-default">
+            <div class="panel-heading" i18n code="blog.drafts.title" read-only ng-bind="::var"></div>
+            <div class="panel-body">
+                <div class="bin-draft" ng-repeat="item in draftsCtrl.results track by item.id">
+                    <div class="row">
+                        <div class="col-xs-4" ng-bind="::item.creationTime | amDateFormat:'LL'"></div>
+                        <div class="col-xs-8">
+                            <a i18n read-only no-locale code="{{::item.id}}" ng-href="{{::'/view' + item.id | i18nRoute}}" ng-bind="::var"></a>
                         </div>
                     </div>
+                </div>
+                <div class="text-center" ng-if="draftsCtrl.results.length >= 20">
+                    <button type="button" class="btn btn-link" ng-click="draftsCtrl.searchForMore()" ng-disabled="draftsCtrl.working"
+                            i18n code="button.view.older.articles" read-only>
+                        <span ng-if="!draftsCtrl.working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
+                        <span ng-if="draftsCtrl.working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+                        {{::var}}
+                    </button>
                 </div>
             </div>
         </div>
