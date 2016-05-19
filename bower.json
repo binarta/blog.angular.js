@@ -4,7 +4,8 @@
     "./src/blog.js",
     "./src/blog-tpls-bootstrap3.js",
     "./metadata.json",
-    "./metadata-system.json"
+    "./metadata-system.json",
+    "./sources.json"
   ],
   "dependencies": {
     "angular": "1.3.*",
