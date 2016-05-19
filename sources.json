@@ -2,7 +2,7 @@
   "default": {
     "blog": "bower_components/binarta.blog.angular/src/blog.js",
     "blog.types": "bower_components/binarta.blog.angular/src/blog.types.default.js",
-    "blog.templates": "bower_components/binarta.blog.angular/src/blog-unavailable-tpls-bootstrap3.js",
+    "blog.templates": "bower_components/binarta.blog.angular/src/blog-unavailable-tpls-bootstrap3.js"
   },
   "blog": {
     "blog.templates": "bower_components/binarta.blog.angular/src/blog-tpls-bootstrap3.js"
