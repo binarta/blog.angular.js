@@ -1,5 +1,5 @@
 (function () {
-    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'angularMoment'])
+    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx'])
         .config(['$routeProvider', 'configProvider', function($routeProvider, configProvider) {
             $routeProvider
                 .when('/add/blog', {templateUrl:'partials/blog/add.html'})
