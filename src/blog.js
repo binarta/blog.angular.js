@@ -55,7 +55,7 @@
     function BinBlogController($q, $routeParams, i18n, addCatalogItem) {
         var self = this;
         self.partition = self.partition || '/blog/';
-        self.blogType = self.blogType || $routeParams.blogType || 'blog';
+        self.blogType = self.blogType || $routeParams.blogType;
 
         this.isAllowed = function () {
             var deferred = $q.defer();
@@ -78,7 +78,7 @@
         this.addArticle = function (blogType) {
             var item = {
                 type: 'blog',
-                blogType: blogType || self.blogType,
+                blogType: blogType || self.blogType || 'blog',
                 partition: self.partition
             };
             if (!self.multilingual) item.locale = 'default';

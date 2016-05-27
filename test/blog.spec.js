@@ -76,8 +76,8 @@ describe('blog', function () {
             expect(ctrl.partition).toEqual('/blog/');
         });
 
-        it('default blogType', function () {
-            expect(ctrl.blogType).toEqual('blog');
+        it('do not use a blogType by default', function () {
+            expect(ctrl.blogType).toBeUndefined();
         });
 
         it('when blogType is in routeParams', inject(function ($routeParams, $controller) {
