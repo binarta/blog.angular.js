@@ -124,7 +124,7 @@
                     settings: 'blog',
                     filters: filters
                 };
-                if(ctrl.count) settings.subset = {count:ctrl.count};
+                if(ctrl.count) settings.subset = {count:parseInt(ctrl.count)};
 
                 scope.searchCtrl.init(settings);
             }
