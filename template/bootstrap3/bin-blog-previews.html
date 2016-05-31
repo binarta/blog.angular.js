@@ -1,4 +1,5 @@
-<article class="row bin-article" ng-repeat="item in searchCtrl.results track by item.id" i18n code="{{::item.id}}.body" var="body" read-only no-locale>
+<article class="row bin-article" ng-hide="(item.publicationTime | amDifference : null : 'minutes') > 0 && !editing"
+         ng-repeat="item in searchCtrl.results track by item.id" i18n code="{{::item.id}}.body" var="body" read-only no-locale>
     <div class="col-sm-4">
         <div class="bin-article-image-wrapper">
             <span ng-if="body != '' || editing">
@@ -29,6 +30,8 @@
                         <li>
                             <i class="fa fa-clock-o fa-fw"></i>
                             {{::item.publicationTime | amDateFormat:'LL'}}
+                            <span class="badge" ng-if="::(item.publicationTime | amDifference : null : 'minutes') > 0"
+                                  i18n code="blog.article.scheduled.label" read-only ng-bind="::var"></span>
                         </li>
                         <!--<li ng-if="settings.useBlogTypes">-->
                             <!--<i class="fa fa-tag fa-fw"></i>-->

@@ -51,6 +51,8 @@
                                     <ul class="list-inline">
                                         <li ng-if="blog.item.publicationTime">
                                             <i class="fa fa-clock-o fa-fw"></i> {{blog.item.publicationTime | amDateFormat:'lll'}}
+                                            <span class="badge" ng-if="(blog.item.publicationTime | amDifference : null : 'minutes') > 0"
+                                                  i18n code="blog.article.scheduled.label" read-only ng-bind="::var"></span>
                                         </li>
                                         <li ng-if="settings.useBlogTypes">
                                             <i class="fa fa-tag"></i>
