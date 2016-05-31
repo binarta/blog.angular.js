@@ -25,7 +25,9 @@
       "blog.upgrade.button": "Upgrade",
       "blog.read.more": "Lees meer...",
       "blog.back": "terug naar overzicht",
-      "blog.view.all.articles": "Bekijk alle artikelen"
+      "blog.view.all.articles": "Bekijk alle artikelen",
+      "blog.publication.time.label": "Publicatietijd",
+      "blog.time.violation.format": "Ongeldig formaat"
     }, "en":{
       "blog.article.add.new.button": "Add new article",
       "blog.article.add.first.button": "Add first article",
@@ -51,7 +53,9 @@
       "blog.upgrade.button": "Upgrade",
       "blog.read.more": "Read more...",
       "blog.back": "Back to overview",
-      "blog.view.all.articles": "View all articles"
+      "blog.view.all.articles": "View all articles",
+      "blog.publication.time.label": "Publication time",
+      "blog.time.violation.format": "Invalid format"
     }, "fr":{
       "blog.article.add.new.button": "Ajouter un nouvel article",
       "blog.article.add.first.button": "Ajouter premier article",
@@ -77,7 +81,9 @@
       "blog.upgrade.button": "Upgrade",
       "blog.read.more": "Lire plus...",
       "blog.back": "Retour à la liste",
-      "blog.view.all.articles": "View all articles"
+      "blog.view.all.articles": "View all articles",
+      "blog.publication.time.label": "Publication time",
+      "blog.time.violation.format": "Invalid format"
     }, "de":{
       "blog.article.add.new.button": "Neuer Artikel",
       "blog.article.add.first.button": "Add first article",
@@ -103,7 +109,9 @@
       "blog.upgrade.button": "Upgrade",
       "blog.read.more": "Mehr lesen...",
       "blog.back": "Zurück zur Übersicht",
-      "blog.view.all.articles": "View all articles"
+      "blog.view.all.articles": "View all articles",
+      "blog.publication.time.label": "Publication time",
+      "blog.time.violation.format": "Invalid format"
     }
   }
 }

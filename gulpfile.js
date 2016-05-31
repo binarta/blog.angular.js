@@ -31,4 +31,11 @@ gulp.task('unavailable-bootstrap3', function () {
         .pipe(gulp.dest('src'));
 });
 
-gulp.task('default', ['templates-bootstrap2', 'templates-bootstrap3', 'unavailable-bootstrap3']);
+gulp.task('clerk-templates-bootstrap3', function () {
+    gulp.src('template/clerk/bootstrap3/**/*.html')
+        .pipe(minifyHtml(minifyHtmlOpts))
+        .pipe(templateCache('blog-clerk-tpls-bootstrap3.js', {standalone: false, module: 'blog.templates'}))
+        .pipe(gulp.dest('src'));
+});
+
+gulp.task('default', ['templates-bootstrap2', 'templates-bootstrap3', 'unavailable-bootstrap3', 'clerk-templates-bootstrap3']);

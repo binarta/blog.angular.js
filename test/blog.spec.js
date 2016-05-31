@@ -1,15 +1,15 @@
 describe('blog', function () {
-    var scope, ctrl, config, $rootScope, i18n, $q;
+    var scope, ctrl, config, $rootScope, i18n, $q, moment;
 
     beforeEach(module('blog.controllers'));
     beforeEach(module('blog'));
-    angular.module('angularMoment', []);
 
-    beforeEach(inject(function (_config_, _$rootScope_, _i18n_, _$q_) {
+    beforeEach(inject(function (_config_, _$rootScope_, _i18n_, _$q_, _moment_) {
         config = _config_;
         $rootScope = _$rootScope_;
         i18n = _i18n_;
         $q = _$q_;
+        moment = _moment_;
         scope = {};
     }));
 
@@ -21,7 +21,7 @@ describe('blog', function () {
                 filters:{
                     type:'blog',
                     sortings: [
-                        {on:'creationTime', orientation:'desc'}
+                        {on:'publicationTime', orientation:'desc'}
                     ]
                 },
                 autosearch:true,
@@ -238,6 +238,199 @@ describe('blog', function () {
                     },
                     redirectToView: true,
                     editMode: true
+                });
+            });
+        });
+    });
+
+    describe('BinBlogPostController', function () {
+        var editModeRenderer, updateCatalogItem;
+
+        beforeEach(inject(function ($controller, _editModeRenderer_, _updateCatalogItem_) {
+            editModeRenderer = _editModeRenderer_;
+            updateCatalogItem = _updateCatalogItem_;
+            scope = $rootScope.$new();
+
+            ctrl = $controller('BinBlogPostController', {
+                $scope: scope
+            });
+        }));
+        
+        describe('with item in draft', function () {
+            var item;
+
+            beforeEach(function () {
+                item = {
+                    id: 'id',
+                    type: 'blog',
+                    blogType: 'blogType',
+                    status: 'draft'
+                };
+
+                ctrl.init(item);
+            });
+
+            describe('on updateStatus', function () {
+                var currentTime;
+
+                beforeEach(function () {
+                    currentTime = moment();
+
+                    ctrl.updateStatus();
+                });
+
+                it('editModeRenderer is opened', function () {
+                    expect(editModeRenderer.open).toHaveBeenCalled();
+                });
+
+                describe('with renderer scope', function () {
+                    beforeEach(function () {
+                        scope = editModeRenderer.open.calls[0].args[0].scope;
+                    });
+
+                    it('publication time is on scope and set to current date and time', function () {
+                        expect(scope.publicationTime).toEqual(currentTime);
+                    });
+
+                    describe('on submit', function () {
+                        var newTime = 'May 31, 2016 10:00 AM';
+
+                        beforeEach(function () {
+                            scope.publicationTime = newTime;
+
+                            scope.submit();
+                        });
+
+                        it('handle with usecase adapter', function () {
+                            updateCatalogItem.calls[0].args[0].start();
+                            expect(scope.working).toBeTruthy();
+
+                            updateCatalogItem.calls[0].args[0].stop();
+                            expect(scope.working).toBeFalsy();
+                        });
+
+                        it('update catalog item', function () {
+                            expect(updateCatalogItem.calls[0].args[0].data).toEqual({
+                                id: item.id,
+                                type: item.type,
+                                blogType: item.blogType,
+                                context: 'update',
+                                status: 'published',
+                                publicationTime: moment(newTime, 'lll').format()
+                            });
+                        });
+
+                        describe('on success', function () {
+                            beforeEach(function () {
+                                updateCatalogItem.calls[0].args[0].success();
+                            });
+
+                            it('update item', function () {
+                                expect(ctrl.item.status).toEqual('published');
+                                expect(ctrl.item.publicationTime).toEqual(moment(newTime, 'lll').format());
+                            });
+
+                            it('close editMode renderer', function () {
+                                expect(editModeRenderer.close).toHaveBeenCalled();
+                            });
+
+                            it('calling updateStatus again unPublishes the item', function () {
+                                ctrl.updateStatus();
+
+                                expect(updateCatalogItem.calls[1].args[0].data).toEqual({
+                                    id: item.id,
+                                    type: item.type,
+                                    blogType: item.blogType,
+                                    context: 'update',
+                                    status: 'draft'
+                                });
+                            });
+                        });
+                    });
+
+                    it('on cancel', function () {
+                        scope.cancel();
+
+                        expect(editModeRenderer.close).toHaveBeenCalled();
+                    });
+                });
+            });
+        });
+
+        describe('with item in draft and previous publication time', function () {
+            var item;
+            var time = '2016-05-31T08:00:00Z';
+
+            beforeEach(function () {
+                item = {
+                    id: 'id',
+                    type: 'blog',
+                    blogType: 'blogType',
+                    status: 'draft',
+                    publicationTime: time
+                };
+
+                ctrl.init(item);
+            });
+
+            describe('on updateStatus', function () {
+
+                beforeEach(function () {
+                    ctrl.updateStatus();
+                    scope = editModeRenderer.open.calls[0].args[0].scope;
+                });
+
+                it('publication time is on scope', function () {
+                    expect(scope.publicationTime).toEqual(moment(time));
+                });
+            });
+        });
+
+        describe('with publisched item', function () {
+            var item;
+            var time = '2016-05-31T08:00:00Z';
+
+            beforeEach(function () {
+                item = {
+                    id: 'id',
+                    type: 'blog',
+                    blogType: 'blogType',
+                    status: 'published',
+                    publicationTime: time
+                };
+
+                ctrl.init(item);
+            });
+
+            describe('on updateStatus', function () {
+                beforeEach(function () {
+                    ctrl.updateStatus();
+                });
+
+                it('unPublishe the item', function () {
+                    expect(updateCatalogItem.calls[0].args[0].data).toEqual({
+                        id: item.id,
+                        type: item.type,
+                        blogType: item.blogType,
+                        context: 'update',
+                        status: 'draft'
+                    });
+                });
+
+                describe('on success', function () {
+                    beforeEach(function () {
+                        updateCatalogItem.calls[0].args[0].success();
+                    });
+
+                    it('update item', function () {
+                        expect(ctrl.item.status).toEqual('draft');
+                    });
+
+                    it('calling updateStatus again opens the editMode renderer for publishing the item', function () {
+                        ctrl.updateStatus();
+
+                        expect(editModeRenderer.open).toHaveBeenCalled();
+                    });
                 });
             });
         });

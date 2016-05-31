@@ -1,5 +1,5 @@
 (function () {
-    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx'])
+    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode', 'angular.usecase.adapter'])
         .config(['$routeProvider', 'configProvider', function($routeProvider, configProvider) {
             $routeProvider
                 .when('/add/blog', {templateUrl:'partials/blog/add.html'})
@@ -19,7 +19,7 @@
                         filters:{
                             type:'blog',
                             sortings: [
-                                {on:'creationTime', orientation:'desc'}
+                                {on:'publicationTime', orientation:'desc'}
                             ]
                         },
                         autosearch:true,
@@ -36,6 +36,7 @@
 
     angular.module('blog.controllers', ['blog.types'])
         .controller('BinBlogController', ['$q', '$routeParams', 'i18n', 'addCatalogItem', BinBlogController])
+        .controller('BinBlogPostController', ['$scope', '$templateCache', 'editModeRenderer', 'updateCatalogItem', 'usecaseAdapterFactory', 'moment', BinBlogPostController])
         .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController])
         .controller('BlogTypesController', ['$scope', 'blogTypesLoader', BlogTypesController])
         .controller('BlogTypeController', ['$scope', '$routeParams', BlogTypeController]);
@@ -91,6 +92,70 @@
         };
     }
 
+    function BinBlogPostController($scope, $templateCache, editModeRenderer, updateCatalogItem, usecaseAdapterFactory, moment) {
+        var self = this;
+        var published = 'published', draft = 'draft';
+        var timeFormat = 'lll';
+
+        this.init = function (item) {
+            self.item = item;
+            updateItemStatus();
+        };
+
+        function updateItemStatus() {
+            self.updateStatus = self.item.status == published ? unPublish : publish;
+        }
+
+        function publish() {
+            var scope = $scope.$new();
+            scope.publicationTime = self.item.publicationTime ? moment(self.item.publicationTime) : moment();
+
+            scope.submit = function () {
+                var time = moment(scope.publicationTime, timeFormat).format();
+                
+                var ctx = usecaseAdapterFactory(scope);
+                ctx.data = {
+                    id: self.item.id,
+                    type: self.item.type,
+                    blogType: self.item.blogType,
+                    context: 'update',
+                    status: 'published',
+                    publicationTime: time
+                };
+                ctx.success = function () {
+                    self.item.status = 'published';
+                    self.item.publicationTime = time;
+                    updateItemStatus();
+                    editModeRenderer.close();
+                };
+                updateCatalogItem(ctx);
+            };
+            
+            scope.cancel = editModeRenderer.close;
+
+            editModeRenderer.open({
+                template: $templateCache.get('bin-blog-update-status.html'),
+                scope: scope
+            });
+        }
+
+        function unPublish() {
+            var ctx = usecaseAdapterFactory($scope);
+            ctx.data = {
+                id: self.item.id,
+                type: self.item.type,
+                blogType: self.item.blogType,
+                context: 'update',
+                status: 'draft'
+            };
+            ctx.success = function () {
+                self.item.status = 'draft';
+                updateItemStatus();
+            };
+            updateCatalogItem(ctx);
+        }
+    }
+
     function BinBlogDirective() {
         return {
             restrict: 'E',
@@ -115,7 +180,7 @@
             controllerAs: 'searchCtrl',
             bindToController: true,
             link: function (scope, el, attrs, ctrl) {
-                var filters = {status: 'published'};
+                var filters = {status: 'published', published: true};
                 if (ctrl.partition) filters.partition = ctrl.partition;
                 if (ctrl.blogType) filters.blogType = ctrl.blogType;
                 if (!ctrl.multilingual) filters.locale = 'default';

@@ -10,8 +10,7 @@
             <div class="panel-body">
                 <div class="bin-draft" ng-repeat="item in draftsCtrl.results track by item.id">
                     <div class="row">
-                        <div class="col-xs-4" ng-bind="::item.creationTime | amDateFormat:'LL'"></div>
-                        <div class="col-xs-8">
+                        <div class="col-xs-12">
                             <a i18n read-only no-locale code="{{::item.id}}" ng-href="{{::'/view' + item.id | i18nRoute}}" ng-bind="::var"></a>
                         </div>
                     </div>

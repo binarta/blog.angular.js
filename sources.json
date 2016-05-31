@@ -5,6 +5,7 @@
     "blog.templates": "bower_components/binarta.blog.angular/src/blog-unavailable-tpls-bootstrap3.js"
   },
   "blog": {
-    "blog.templates": "bower_components/binarta.blog.angular/src/blog-tpls-bootstrap3.js"
+    "blog.templates": "bower_components/binarta.blog.angular/src/blog-tpls-bootstrap3.js",
+    "blog.clerk.templates": "bower_components/binarta.blog.angular/src/blog-clerk-tpls-bootstrap3.js"
   }
 }
