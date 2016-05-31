@@ -119,11 +119,11 @@
                     type: self.item.type,
                     blogType: self.item.blogType,
                     context: 'update',
-                    status: 'published',
+                    status: published,
                     publicationTime: time
                 };
                 ctx.success = function () {
-                    self.item.status = 'published';
+                    self.item.status = published;
                     self.item.publicationTime = time;
                     updateItemStatus();
                     editModeRenderer.close();
@@ -146,10 +146,10 @@
                 type: self.item.type,
                 blogType: self.item.blogType,
                 context: 'update',
-                status: 'draft'
+                status: draft
             };
             ctx.success = function () {
-                self.item.status = 'draft';
+                self.item.status = draft;
                 updateItemStatus();
             };
             updateCatalogItem(ctx);
