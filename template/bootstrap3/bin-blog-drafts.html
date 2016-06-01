@@ -4,7 +4,7 @@
         settings: 'blog',
         filters:{partition: partition, status:'draft', locale:locale},
         subset:{count:20}})">
-    <div class="bin-blog bin-blog-drafts" ng-if="draftsCtrl.results.length != 0">
+    <div class="bin-blog bin-blog-drafts" ng-if="draftsCtrl.results.length > 0">
         <div class="panel panel-default">
             <div class="panel-heading" i18n code="blog.drafts.title" read-only ng-bind="::var"></div>
             <div class="panel-body">
