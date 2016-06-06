@@ -62,7 +62,7 @@ describe('blog', function () {
             expect(scope.blogType).toEqual(blogType);
         });
     });
-    
+
     describe('BinBlogController', function () {
         var addCatalogItem;
 
@@ -71,7 +71,7 @@ describe('blog', function () {
 
             ctrl = $controller('BinBlogController');
         }));
-        
+
         it('default partition', function () {
             expect(ctrl.partition).toEqual('/blog/');
         });
@@ -94,8 +94,8 @@ describe('blog', function () {
                 allowed = undefined;
                 mainLocale = $q.defer();
                 externalLocale = $q.defer();
-                i18n.getMainLanguage.andReturn(mainLocale.promise);
-                i18n.getExternalLocale.andReturn(externalLocale.promise);
+                i18n.getMainLanguage.and.returnValue(mainLocale.promise);
+                i18n.getExternalLocale.and.returnValue(externalLocale.promise);
             });
 
             describe('when multilingualism is enabled', function () {
@@ -168,7 +168,7 @@ describe('blog', function () {
 
         describe('add new article', function () {
             beforeEach(function () {
-                addCatalogItem.andReturn('return');
+                addCatalogItem.and.returnValue('return');
             });
 
             it('with default settings', function () {
@@ -255,7 +255,7 @@ describe('blog', function () {
                 $scope: scope
             });
         }));
-        
+
         describe('with item in draft', function () {
             var item;
 
@@ -285,7 +285,7 @@ describe('blog', function () {
 
                 describe('with renderer scope', function () {
                     beforeEach(function () {
-                        scope = editModeRenderer.open.calls[0].args[0].scope;
+                        scope = editModeRenderer.open.calls.first().args[0].scope;
                     });
 
                     it('publication time is on scope and set to current date and time', function () {
@@ -302,15 +302,15 @@ describe('blog', function () {
                         });
 
                         it('handle with usecase adapter', function () {
-                            updateCatalogItem.calls[0].args[0].start();
+                            updateCatalogItem.calls.first().args[0].start();
                             expect(scope.working).toBeTruthy();
 
-                            updateCatalogItem.calls[0].args[0].stop();
+                            updateCatalogItem.calls.first().args[0].stop();
                             expect(scope.working).toBeFalsy();
                         });
 
                         it('update catalog item', function () {
-                            expect(updateCatalogItem.calls[0].args[0].data).toEqual({
+                            expect(updateCatalogItem.calls.first().args[0].data).toEqual({
                                 id: item.id,
                                 type: item.type,
                                 blogType: item.blogType,
@@ -322,7 +322,7 @@ describe('blog', function () {
 
                         describe('on success', function () {
                             beforeEach(function () {
-                                updateCatalogItem.calls[0].args[0].success();
+                                updateCatalogItem.calls.first().args[0].success();
                             });
 
                             it('update item', function () {
@@ -337,7 +337,7 @@ describe('blog', function () {
                             it('calling updateStatus again unPublishes the item', function () {
                                 ctrl.updateStatus();
 
-                                expect(updateCatalogItem.calls[1].args[0].data).toEqual({
+                                expect(updateCatalogItem.calls.mostRecent().args[0].data).toEqual({
                                     id: item.id,
                                     type: item.type,
                                     blogType: item.blogType,
@@ -377,7 +377,7 @@ describe('blog', function () {
 
                 beforeEach(function () {
                     ctrl.updateStatus();
-                    scope = editModeRenderer.open.calls[0].args[0].scope;
+                    scope = editModeRenderer.open.calls.first().args[0].scope;
                 });
 
                 it('publication time is on scope', function () {
@@ -408,7 +408,7 @@ describe('blog', function () {
                 });
 
                 it('unPublishe the item', function () {
-                    expect(updateCatalogItem.calls[0].args[0].data).toEqual({
+                    expect(updateCatalogItem.calls.first().args[0].data).toEqual({
                         id: item.id,
                         type: item.type,
                         blogType: item.blogType,
@@ -419,7 +419,7 @@ describe('blog', function () {
 
                 describe('on success', function () {
                     beforeEach(function () {
-                        updateCatalogItem.calls[0].args[0].success();
+                        updateCatalogItem.calls.first().args[0].success();
                     });
 
                     it('update item', function () {
