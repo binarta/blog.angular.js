@@ -5,43 +5,36 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                     <article class="bin-article">
-                        <div class="bin-article-image-wrapper">
-                            <img class="img-responsive" bin-image="images{{::blog.item.id}}/cover.img" alt="blog post cover image" seo-image>
-                        </div>
 
-                        <div class="alert alert-info" ng-if="blog.item.status != 'published'"
-                             i18n code="blog.article.draft.label" default="DRAFT" read-only>
-                            <i class="fa fa-square fa-fw"></i> {{::var}}
-                        </div>
-
-                        <div class="bin-edit">
-                            <div class="bin-dropdown bin-edit-dropdown" ng-if="editing">
-                                <button type="button" class="bin-btn bin-btn-down bin-btn-primary"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                <ul>
-                                    <li ng-if="blog.updateStatus">
-                                        <button type="button" class="bin-link" ng-click="blog.updateStatus()"
-                                                i18n code="blog.article.{{blog.item.status == 'draft' ? 'publish' : 'unpublish'}}.button"
-                                                watch-on-code read-only ng-bind="var"
-                                                ng-disabled="working"></button>
-                                    </li>
-                                    <li checkpoint-permission-for="catalog.item.remove" ng-show="permitted"
-                                        i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
-                                        <button type="button" class="bin-link bin-link-danger"
-                                                ng-controller="RemoveItemFromCatalogController"
-                                                ng-init="init({redirect:blog.item.partition})"
-                                                ng-click-confirm="submit(blog.item.id)"
-                                                confirm-message="{{::var}}"
-                                                ng-if="::var"
-                                                ng-disabled="working">
-                                            <span i18n code="blog.article.remove.button" read-only ng-bind="::var"></span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bin-edit-body">
-
+                        <bin-edit>
+                            <bin-edit-actions>
+                                <bin-edit-action action="blog.updateStatus">
+                                        <span i18n code="blog.article.{{blog.item.status == 'draft' ? 'publish' : 'unpublish'}}.button"
+                                              watch-on-code read-only ng-bind="var"></span>
+                                </bin-edit-action>
+                                <li checkpoint-permission-for="catalog.item.remove" ng-show="permitted"
+                                    i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
+                                    <button type="button" class="bin-link bin-link-danger"
+                                            ng-controller="RemoveItemFromCatalogController"
+                                            ng-init="init({redirect:blog.item.partition})"
+                                            ng-click-confirm="submit(blog.item.id)"
+                                            confirm-message="{{::var}}"
+                                            ng-if="::var"
+                                            ng-disabled="working">
+                                        <span i18n code="blog.article.remove.button" read-only ng-bind="::var"></span>
+                                    </button>
+                                </li>
+                            </bin-edit-actions>
+                            <bin-edit-header>
+                                <div class="bin-article-image-wrapper">
+                                    <img class="img-responsive" bin-image="images{{::blog.item.id}}/cover.img" alt="blog post cover image" seo-image>
+                                </div>
+                                <div class="alert alert-info" ng-if="blog.item.status != 'published'"
+                                     i18n code="blog.article.draft.label" default="DRAFT" read-only>
+                                    <i class="fa fa-square fa-fw"></i> {{::var}}
+                                </div>
+                            </bin-edit-header>
+                            <bin-edit-body>
                                 <div class="bin-article-heading">
                                     <h2 class="inline bin-article-title"
                                         i18n code="{{::blog.item.id}}" default="{{::blog.item.id}}" var="itemTitle" no-locale seo-title>
@@ -51,8 +44,9 @@
                                     <ul class="list-inline">
                                         <li ng-if="blog.item.publicationTime">
                                             <i class="fa fa-clock-o fa-fw"></i> {{blog.item.publicationTime | amDateFormat:'lll'}}
-                                            <span class="badge" ng-if="(blog.item.publicationTime | amDifference : null : 'minutes') > 0"
-                                                  i18n code="blog.article.scheduled.label" read-only ng-bind="::var"></span>
+                                                <span class="badge"
+                                                      ng-if="(blog.item.publicationTime | amDifference : null : 'minutes') > 0 && blog.item.status != 'draft'"
+                                                      i18n code="blog.article.scheduled.label" read-only ng-bind="::var"></span>
                                         </li>
                                         <li ng-if="settings.useBlogTypes">
                                             <i class="fa fa-tag"></i>
@@ -77,8 +71,9 @@
                                         <span ng-if="var" ng-bind-html="var|trust">
                                         </span>
                                 </p>
-                            </div>
-                        </div>
+
+                            </bin-edit-body>
+                        </bin-edit>
                     </article>
                 </div>
             </div>

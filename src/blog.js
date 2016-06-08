@@ -1,5 +1,5 @@
 (function () {
-    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode', 'angular.usecase.adapter'])
+    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode', 'angular.usecase.adapter', 'bin.edit'])
         .config(['$routeProvider', 'configProvider', function($routeProvider, configProvider) {
             $routeProvider
                 .when('/add/blog', {templateUrl:'partials/blog/add.html'})
