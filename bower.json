@@ -11,8 +11,8 @@
     "binarta.angularx": "0.*.*",
     "binarta.momentx.angular": "0.*.*",
     "binarta.config.angular": "0.*.*",
-    "binarta.i18n.angular": "1.*.*",
-    "binarta.catalog.angular": "1.*.*",
+    "binarta.i18n.angular": "2.*.*",
+    "binarta.catalog.angular": "2.*.*",
     "binarta.toggle.edit.mode.angular": "1.*.*",
     "binarta.usecase.adapter.angular": "0.*.*",
     "binarta.edit.angular": "0.*.*"
