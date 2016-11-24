@@ -39,7 +39,7 @@
     <article class="row bin-article" ng-repeat="item in results track by item.id" i18n code="{{item.id}}.body" var="body" read-only no-locale>
         <div class="span4">
             <div class="img-polaroid bin-article-image-wrapper" checkpoint-permission-for="edit.mode">
-                <a ng-href="#!{{localePrefix}}/view{{item.id}}" ng-if="body != '' || permitted">
+                <a ng-href="#!{{localePrefix}}/view{{item.localizedId || item.id}}" ng-if="body != '' || permitted">
                     <img class="bin-article-image" bin-image="images{{item.id}}/cover.img" alt="blog post cover image">
                 </a>
                 <img class="bin-article-image" bin-image="images{{item.id}}/cover.img" alt="blog post cover image" ng-if="body == '' && !permitted">
@@ -49,7 +49,7 @@
             <div class="well clearfix">
                 <div checkpoint-permission-for="edit.mode">
                     <h2 class="inline bin-article-title" i18n code="{{item.id}}" default="{{item.id}}" no-locale ng-if="body != '' || permitted">
-                        <a ng-href="#!{{localePrefix}}/view{{item.id}}">
+                        <a ng-href="#!{{localePrefix}}/view{{item.localizedId || item.id}}">
                             {{var}}
                         </a>
                     </h2>
@@ -74,7 +74,7 @@
             <p class="bin-article-lead" i18n code="{{item.id}}.lead" editor="full" no-locale ng-bind-html="var|trust"></p>
 
             <span class="inline" i18n code="blog.read.more" default="Read More..." read-only ng-if="body != ''">
-                <a class="read-more" ng-href="#!{{localePrefix}}/view{{item.id}}" title="Read More">
+                <a class="read-more" ng-href="#!{{localePrefix}}/view{{item.localizedId || item.id}}" title="Read More">
                     {{::var}}
                 </a>
             </span>
