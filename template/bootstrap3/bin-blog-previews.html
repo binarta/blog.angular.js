@@ -3,7 +3,7 @@
     <div class="col-sm-4">
         <div class="bin-article-image-wrapper">
             <span ng-if="body != '' || editing">
-                <a ng-href="{{::'/view' + item.id | i18nRoute}}">
+                <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}">
                     <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image">
                 </a>
             </span>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="inline bin-article-title">
-                        <a ng-href="{{::'/view' + item.id | i18nRoute}}" ng-if="body != '' || editing"
+                        <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}" ng-if="body != '' || editing"
                            i18n code="{{::item.id}}" default="{{::item.id}}" read-only no-locale>
                             {{::var}}
                         </a>
@@ -33,10 +33,6 @@
                             <span class="badge" ng-if="::(item.publicationTime | amDifference : null : 'minutes') > 0"
                                   i18n code="blog.article.scheduled.label" read-only ng-bind="::var"></span>
                         </li>
-                        <!--<li ng-if="settings.useBlogTypes">-->
-                            <!--<i class="fa fa-tag fa-fw"></i>-->
-                            <!--<i18n class="inline" code="blog.type.{{item.blogType}}" default="{{item.blogType}}" read-only>{{::var}}</i18n>-->
-                        <!--</li>-->
                     </ul>
                 </div>
             </div>
@@ -45,7 +41,7 @@
         <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" read-only no-locale ng-bind-html="::var|trust"></p>
 
         <span i18n code="blog.read.more" read-only ng-if="body != ''">
-            <a ng-href="{{::'/view' + item.id | i18nRoute}}" class="read-more" title="Read More">
+            <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}" class="read-more" title="Read More">
                 {{::var}}
             </a>
         </span>
