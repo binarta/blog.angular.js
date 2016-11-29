@@ -3,7 +3,7 @@
     <div class="col-sm-4">
         <div class="bin-article-image-wrapper">
             <span ng-if="body != '' || editing">
-                <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}">
+                <a bin-href="{{::'/view' + (item.localizedId || item.id)}}">
                     <img class="img-responsive" bin-image="images{{::item.id}}/cover.img" alt="blog post cover image">
                 </a>
             </span>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="inline bin-article-title">
-                        <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}" ng-if="body != '' || editing"
+                        <a bin-href="{{::'/view' + (item.localizedId || item.id)}}" ng-if="body != '' || editing"
                            i18n code="{{::item.id}}" default="{{::item.id}}" read-only no-locale>
                             {{::var}}
                         </a>
@@ -41,7 +41,7 @@
         <p class="bin-article-lead" i18n code="{{::item.id}}.lead" editor="full" read-only no-locale ng-bind-html="::var|trust"></p>
 
         <span i18n code="blog.read.more" read-only ng-if="body != ''">
-            <a ng-href="{{::'/view' + (item.localizedId || item.id) | i18nRoute}}" class="read-more" title="Read More">
+            <a bin-href="{{::'/view' + (item.localizedId || item.id)}}" class="read-more" title="Read More">
                 {{::var}}
             </a>
         </span>

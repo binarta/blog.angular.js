@@ -1,15 +1,19 @@
 describe('blog', function () {
-    var scope, ctrl, config, $rootScope, i18n, $q, moment;
+    var scope, ctrl, config, $rootScope, i18n, $q, moment, $compile, binarta, topicRegistry;
 
+    beforeEach(module('blog.templates'));
     beforeEach(module('blog.controllers'));
     beforeEach(module('blog'));
 
-    beforeEach(inject(function (_config_, _$rootScope_, _i18n_, _$q_, _moment_) {
+    beforeEach(inject(function (_config_, _$rootScope_, _i18n_, _$q_, _moment_, _$compile_, _binarta_, _topicRegistry_) {
         config = _config_;
         $rootScope = _$rootScope_;
         i18n = _i18n_;
         $q = _$q_;
         moment = _moment_;
+        $compile = _$compile_;
+        binarta = _binarta_;
+        topicRegistry = _topicRegistry_;
         scope = {};
     }));
 
@@ -63,13 +67,9 @@ describe('blog', function () {
         });
     });
 
-    describe('BinBlogController', function () {
-        var addCatalogItem;
-
-        beforeEach(inject(function ($controller, _addCatalogItem_) {
-            addCatalogItem = _addCatalogItem_;
-
-            ctrl = $controller('BinBlogController');
+    describe('BinBlog component', function () {
+        beforeEach(inject(function ($componentController) {
+            ctrl = $componentController('binBlog');
         }));
 
         it('default partition', function () {
@@ -80,9 +80,9 @@ describe('blog', function () {
             expect(ctrl.blogType).toBeUndefined();
         });
 
-        it('when blogType is in routeParams', inject(function ($routeParams, $controller) {
+        it('when blogType is in routeParams', inject(function ($routeParams, $componentController) {
             $routeParams.blogType = 'type';
-            var newCtrl = $controller('BinBlogController');
+            var newCtrl = $componentController('binBlog');
 
             expect(newCtrl.blogType).toEqual('type');
         }));
@@ -104,7 +104,7 @@ describe('blog', function () {
                 });
 
                 it('is allowed', function () {
-                    ctrl.isAllowed().then(function (check) {
+                    ctrl.isAllowed(function (check) {
                         allowed = check;
                     });
 
@@ -121,7 +121,7 @@ describe('blog', function () {
                 });
 
                 it('is allowed', function () {
-                    ctrl.isAllowed().then(function (check) {
+                    ctrl.isAllowed(function (check) {
                         allowed = check;
                     });
 
@@ -138,7 +138,7 @@ describe('blog', function () {
                 });
 
                 it('is allowed', function () {
-                    ctrl.isAllowed().then(function (check) {
+                    ctrl.isAllowed(function (check) {
                         allowed = check;
                     });
 
@@ -155,89 +155,13 @@ describe('blog', function () {
                 });
 
                 it('is allowed', function () {
-                    ctrl.isAllowed().then(function (check) {
+                    ctrl.isAllowed(function (check) {
                         allowed = check;
                     });
 
                     $rootScope.$digest();
 
                     expect(allowed).toEqual(false);
-                });
-            });
-        });
-
-        describe('add new article', function () {
-            beforeEach(function () {
-                addCatalogItem.and.returnValue('return');
-            });
-
-            it('with default settings', function () {
-                ctrl.addArticle();
-
-                expect(addCatalogItem).toHaveBeenCalledWith({
-                    item: {
-                        type: 'blog',
-                        blogType: 'blog',
-                        partition: '/blog/',
-                        locale: 'default'
-                    },
-                    redirectToView: true,
-                    editMode: true
-                });
-            });
-
-            it('return value', function () {
-                expect(ctrl.addArticle()).toEqual('return');
-            });
-
-            it('with partition', function () {
-                ctrl.partition = '/partition/';
-
-                ctrl.addArticle();
-
-                expect(addCatalogItem).toHaveBeenCalledWith({
-                    item: {
-                        type: 'blog',
-                        blogType: 'blog',
-                        partition: '/partition/',
-                        locale: 'default'
-                    },
-                    redirectToView: true,
-                    editMode: true
-                });
-            });
-
-            it('with blogType', function () {
-                ctrl.blogType = 'type';
-
-                ctrl.addArticle();
-
-                expect(addCatalogItem).toHaveBeenCalledWith({
-                    item: {
-                        type: 'blog',
-                        blogType: 'type',
-                        partition: '/blog/',
-                        locale: 'default'
-                    },
-                    redirectToView: true,
-                    editMode: true
-                });
-            });
-
-            it('with custom blogType', function () {
-                ctrl.blogType = 'blog-type';
-
-                ctrl.addArticle('type');
-
-                expect(addCatalogItem).toHaveBeenCalledWith({
-                    item: {
-                        type: 'blog',
-                        blogType: 'type',
-                        partition: '/blog/',
-                        locale: 'default'
-                    },
-                    redirectToView: true,
-                    editMode: true
                 });
             });
         });
@@ -431,6 +355,341 @@ describe('blog', function () {
 
                         expect(editModeRenderer.open).toHaveBeenCalled();
                     });
+                });
+            });
+        });
+    });
+
+    describe('binBlogAddArticleButton component', function () {
+        var $ctrl, addCatalogItem, blogCtrl;
+
+        beforeEach(inject(function ($componentController, _addCatalogItem_) {
+            binarta.application.profile().supportedLanguages = ['N', 'E'];
+            addCatalogItem = _addCatalogItem_;
+            blogCtrl = {
+                partition: 'partition',
+                blogType: 'blog-type',
+                isAllowed: jasmine.createSpy('isAllowed'),
+                addArticle: jasmine.createSpy('addArticle')
+            };
+            $ctrl = $componentController('binBlogAddArticleButton', null, {blogCtrl: blogCtrl});
+        }));
+
+        describe('and user has no permission', function () {
+            beforeEach(function () {
+                binarta.checkpoint.registrationForm.submit({username: 'u', password: 'p'});
+                $ctrl.$onInit();
+            });
+
+            it('is not permitted', function () {
+                expect($ctrl.permitted).toBeFalsy();
+            });
+
+            it('add article does nothing', function () {
+                $ctrl.addArticle();
+                expect(blogCtrl.addArticle).not.toHaveBeenCalled();
+            });
+
+            describe('on destroy', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.reset();
+                    $ctrl.$onDestroy();
+                });
+
+                it('profile observer is disconnected', function () {
+                    binarta.checkpoint.profile.signout();
+                    binarta.checkpoint.signinForm.submit({username: 'u', password: 'p'});
+                    expect(blogCtrl.isAllowed).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('and user has catalog.item.add permission', function () {
+            beforeEach(function () {
+                binarta.checkpoint.gateway.addPermission('catalog.item.add');
+                binarta.checkpoint.registrationForm.submit({username: 'u', password: 'p'});
+                $ctrl.$onInit();
+            });
+
+            it('is permitted', function () {
+                expect($ctrl.permitted).toBeTruthy();
+            });
+
+            it('listens to edit-mode changes', function () {
+                expect(topicRegistry.subscribe).toHaveBeenCalledWith('edit.mode', jasmine.any(Function));
+                topicRegistry.subscribe.calls.argsFor(0)[1](true);
+                expect($ctrl.editing).toBeTruthy();
+                topicRegistry.subscribe.calls.argsFor(0)[1](false);
+                expect($ctrl.editing).toBeFalsy();
+            });
+
+            it('check if adding new article is allowed', function () {
+                expect(blogCtrl.isAllowed).toHaveBeenCalled();
+            });
+
+            describe('when adding is not allowed', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.mostRecent().args[0](false);
+                });
+
+                it('is not allowed', function () {
+                    expect($ctrl.allowed).toBeFalsy();
+                });
+
+                it('primary language is available', function () {
+                    expect($ctrl.primaryLanguage).toEqual('N');
+                });
+
+                it('add article does nothing', function () {
+                    $ctrl.addArticle();
+                    expect(blogCtrl.addArticle).not.toHaveBeenCalled();
+                });
+            });
+
+            describe('when adding is allowed', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.mostRecent().args[0](true);
+                });
+
+                it('is allowed', function () {
+                    expect($ctrl.allowed).toBeTruthy();
+                });
+
+                describe('on add article', function () {
+                    it('with default settings', function () {
+                        $ctrl.addArticle();
+                        expect(addCatalogItem).toHaveBeenCalledWith({
+                            item: {
+                                type: 'blog',
+                                blogType: 'blog-type',
+                                partition: 'partition',
+                                locale: 'default'
+                            },
+                            redirectToView: true,
+                            editMode: true
+                        });
+                    });
+
+                    it('with custom blogType', function () {
+                        $ctrl.blogType = 'custom';
+                        $ctrl.addArticle();
+                        expect(addCatalogItem).toHaveBeenCalledWith({
+                            item: {
+                                type: 'blog',
+                                blogType: 'custom',
+                                partition: 'partition',
+                                locale: 'default'
+                            },
+                            redirectToView: true,
+                            editMode: true
+                        });
+                    });
+
+                    it('use fallback blog-type when non is given', function () {
+                        $ctrl.blogType = undefined;
+                        $ctrl.blogCtrl.blogType = undefined;
+                        $ctrl.addArticle();
+                        expect(addCatalogItem).toHaveBeenCalledWith({
+                            item: {
+                                type: 'blog',
+                                blogType: 'blog',
+                                partition: 'partition',
+                                locale: 'default'
+                            },
+                            redirectToView: true,
+                            editMode: true
+                        });
+                    });
+
+                    it('when blog is multilingual', function () {
+                        $ctrl.blogCtrl.multilingual = true;
+                        $ctrl.addArticle();
+                        expect(addCatalogItem).toHaveBeenCalledWith({
+                            item: {
+                                type: 'blog',
+                                blogType: 'blog-type',
+                                partition: 'partition'
+                            },
+                            redirectToView: true,
+                            editMode: true
+                        });
+                    });
+                });
+            });
+
+            describe('when signed out', function () {
+                beforeEach(function () {
+                    binarta.checkpoint.profile.signout();
+                });
+
+                it('is not permitted', function () {
+                    expect($ctrl.permitted).toBeFalsy();
+                });
+
+                it('edit-mode listener is unsubscribed', function () {
+                    var listener = topicRegistry.subscribe.calls.mostRecent().args[1];
+                    expect(topicRegistry.unsubscribe).toHaveBeenCalledWith('edit.mode', listener);
+                });
+
+                it('add article does nothing', function () {
+                    $ctrl.addArticle();
+                    expect(blogCtrl.addArticle).not.toHaveBeenCalled();
+                });
+            });
+
+            describe('on destroy', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.reset();
+                    $ctrl.$onDestroy();
+                });
+
+                it('edit-mode listener is unsubscribed', function () {
+                    var listener = topicRegistry.subscribe.calls.mostRecent().args[1];
+                    expect(topicRegistry.unsubscribe).toHaveBeenCalledWith('edit.mode', listener);
+                });
+
+                it('profile observer is disconnected', function () {
+                    binarta.checkpoint.profile.signout();
+                    binarta.checkpoint.signinForm.submit({username: 'u', password: 'p'});
+                    expect(blogCtrl.isAllowed).not.toHaveBeenCalled();
+                });
+            });
+        });
+    });
+
+    describe('binBlogDrafts component', function () {
+        var $ctrl, blogCtrl;
+
+        beforeEach(inject(function ($componentController) {
+            blogCtrl = {
+                partition: 'partition',
+                blogType: 'blog-type',
+                isAllowed: jasmine.createSpy('isAllowed')
+            };
+            $ctrl = $componentController('binBlogDrafts', null, {blogCtrl: blogCtrl});
+        }));
+
+        describe('and user has no permission', function () {
+            beforeEach(function () {
+                binarta.checkpoint.registrationForm.submit({username: 'u', password: 'p'});
+                $ctrl.$onInit();
+            });
+
+            it('is not permitted', function () {
+                expect($ctrl.permitted).toBeFalsy();
+            });
+
+            describe('on destroy', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.reset();
+                    $ctrl.$onDestroy();
+                });
+
+                it('profile observer is disconnected', function () {
+                    binarta.checkpoint.profile.signout();
+                    binarta.checkpoint.signinForm.submit({username: 'u', password: 'p'});
+                    expect(blogCtrl.isAllowed).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('and user has blog.drafts.view permission', function () {
+            beforeEach(function () {
+                binarta.checkpoint.gateway.addPermission('blog.drafts.view');
+                binarta.checkpoint.registrationForm.submit({username: 'u', password: 'p'});
+                $ctrl.$onInit();
+            });
+
+            it('is permitted', function () {
+                expect($ctrl.permitted).toBeTruthy();
+            });
+
+            it('listens to edit-mode changes', function () {
+                expect(topicRegistry.subscribe).toHaveBeenCalledWith('edit.mode', jasmine.any(Function));
+                topicRegistry.subscribe.calls.argsFor(0)[1](true);
+                expect($ctrl.editing).toBeTruthy();
+                topicRegistry.subscribe.calls.argsFor(0)[1](false);
+                expect($ctrl.editing).toBeFalsy();
+            });
+
+            it('check if viewing drafts is allowed', function () {
+                expect(blogCtrl.isAllowed).toHaveBeenCalled();
+            });
+
+            describe('when viewing drafts is not allowed', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.mostRecent().args[0](false);
+                });
+
+                it('is not allowed', function () {
+                    expect($ctrl.allowed).toBeFalsy();
+                });
+            });
+
+            describe('when viewing drafts is allowed', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.mostRecent().args[0](true);
+                });
+
+                it('is allowed', function () {
+                    expect($ctrl.allowed).toBeTruthy();
+                });
+
+                it('partition is available on controller', function () {
+                    expect($ctrl.partition).toEqual('partition');
+                });
+
+                it('use default locale by default', function () {
+                    expect($ctrl.locale).toEqual('default');
+                });
+            });
+
+            describe('when blog is multilingual', function () {
+                beforeEach(function () {
+                    blogCtrl.multilingual = true;
+                });
+
+                describe('and viewing drafts is allowed', function () {
+                    beforeEach(function () {
+                        blogCtrl.isAllowed.calls.mostRecent().args[0](true);
+                    });
+
+                    it('do not override locale', function () {
+                        expect($ctrl.locale).toBeUndefined();
+                    });
+                });
+            });
+
+            describe('when signed out', function () {
+                beforeEach(function () {
+                    binarta.checkpoint.profile.signout();
+                });
+
+                it('is not permitted', function () {
+                    expect($ctrl.permitted).toBeFalsy();
+                });
+
+                it('edit-mode listener is unsubscribed', function () {
+                    var listener = topicRegistry.subscribe.calls.mostRecent().args[1];
+                    expect(topicRegistry.unsubscribe).toHaveBeenCalledWith('edit.mode', listener);
+                });
+            });
+
+            describe('on destroy', function () {
+                beforeEach(function () {
+                    blogCtrl.isAllowed.calls.reset();
+                    $ctrl.$onDestroy();
+                });
+
+                it('edit-mode listener is unsubscribed', function () {
+                    var listener = topicRegistry.subscribe.calls.mostRecent().args[1];
+                    expect(topicRegistry.unsubscribe).toHaveBeenCalledWith('edit.mode', listener);
+                });
+
+                it('profile observer is disconnected', function () {
+                    binarta.checkpoint.profile.signout();
+                    binarta.checkpoint.signinForm.submit({username: 'u', password: 'p'});
+                    expect(blogCtrl.isAllowed).not.toHaveBeenCalled();
                 });
             });
         });

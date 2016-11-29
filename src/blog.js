@@ -1,41 +1,47 @@
 (function () {
-    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode', 'angular.usecase.adapter', 'bin.edit'])
-        .config(['$routeProvider', 'configProvider', function($routeProvider, configProvider) {
+    angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode',
+        'angular.usecase.adapter', 'bin.edit', 'notifications', 'binarta-checkpointjs-angular1', 'binarta-applicationjs-angular1'])
+        .config(['$routeProvider', 'configProvider', function ($routeProvider, configProvider) {
             $routeProvider
-                .when('/add/blog', {templateUrl:'partials/blog/add.html'})
+                .when('/add/blog', {templateUrl: 'partials/blog/add.html'})
                 .when('/:locale/add/blog', {templateUrl: 'partials/blog/add.html'})
                 .when('/blog/add', {templateUrl: 'partials/blog/add.html'})
                 .when('/:locale/blog/add', {templateUrl: 'partials/blog/add.html'})
-                .when('/blog', {templateUrl:'partials/blog/index.html'})
-                .when('/:locale/blog', {templateUrl:'partials/blog/index.html'})
-                .when('/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: ['$scope', '$routeParams', BlogTypeController]})
-                .when('/:locale/blog/:blogType', {templateUrl:'partials/blog/index.html', controller: ['$scope', '$routeParams', BlogTypeController]});
+                .when('/blog', {templateUrl: 'partials/blog/index.html'})
+                .when('/:locale/blog', {templateUrl: 'partials/blog/index.html'})
+                .when('/blog/:blogType', {
+                    templateUrl: 'partials/blog/index.html',
+                    controller: ['$scope', '$routeParams', BlogTypeController]
+                })
+                .when('/:locale/blog/:blogType', {
+                    templateUrl: 'partials/blog/index.html',
+                    controller: ['$scope', '$routeParams', BlogTypeController]
+                });
 
             configProvider.add({
                 searchSettings: {
                     blog: {
-                        entity:'catalog-item',
-                        context:'search',
-                        filters:{
-                            type:'blog',
+                        entity: 'catalog-item',
+                        context: 'search',
+                        filters: {
+                            type: 'blog',
                             sortings: [
-                                {on:'publicationTime', orientation:'desc'}
+                                {on: 'publicationTime', orientation: 'desc'}
                             ]
                         },
-                        autosearch:true,
-                        subset:{count:12},
+                        autosearch: true,
+                        subset: {count: 12},
                         noMoreResultsNotification: false
                     }
                 }
             });
         }])
-        .directive('binBlog', [BinBlogDirective])
-        .directive('binBlogPreviews', BinBlogPreviewsDirective)
-        .directive('binBlogAddArticleButton', ['$templateCache', 'ngRegisterTopicHandler', 'activeUserHasPermission', BinBlogAddArticleButtonDirective])
-        .directive('binBlogDrafts', ['$templateCache', 'ngRegisterTopicHandler', 'activeUserHasPermission', BinBlogDraftsDirective]);
+        .component('binBlog', new BinBlogComponent())
+        .component('binBlogAddArticleButton', new BinBlogAddArticleButtonComponent())
+        .component('binBlogDrafts', new BinBlogDraftsComponent())
+        .directive('binBlogPreviews', BinBlogPreviewsDirective);
 
     angular.module('blog.controllers', ['blog.types'])
-        .controller('BinBlogController', ['$q', '$routeParams', 'i18n', 'addCatalogItem', BinBlogController])
         .controller('BinBlogPostController', ['$scope', '$templateCache', 'editModeRenderer', 'updateCatalogItem', 'usecaseAdapterFactory', 'moment', BinBlogPostController])
         .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController])
         .controller('BlogTypesController', ['$scope', 'blogTypesLoader', BlogTypesController])
@@ -53,45 +59,6 @@
         $scope.blogType = $routeParams.blogType;
     }
 
-    function BinBlogController($q, $routeParams, i18n, addCatalogItem) {
-        var self = this;
-        self.partition = self.partition || '/blog/';
-        self.blogType = self.blogType || $routeParams.blogType;
-
-        this.isAllowed = function () {
-            var deferred = $q.defer();
-            if (self.multilingual) deferred.resolve(true);
-            else {
-                i18n.getMainLanguage().then(function (mainLocale) {
-                    i18n.getExternalLocale().then(function (externalLocale) {
-                        deferred.resolve(mainLocale == externalLocale);
-                    }, function () {
-                        deferred.resolve(true);
-                    });
-                });
-            }
-
-            return deferred.promise;
-        };
-
-        this.getMainLocale = i18n.getMainLanguage;
-
-        this.addArticle = function (blogType) {
-            var item = {
-                type: 'blog',
-                blogType: blogType || self.blogType || 'blog',
-                partition: self.partition
-            };
-            if (!self.multilingual) item.locale = 'default';
-
-            return addCatalogItem({
-                item: item,
-                redirectToView: true,
-                editMode: true
-            });
-        };
-    }
-
     function BinBlogPostController($scope, $templateCache, editModeRenderer, updateCatalogItem, usecaseAdapterFactory, moment) {
         var self = this;
         var published = 'published', draft = 'draft';
@@ -106,13 +73,13 @@
             self.updateStatus = self.item.status == published ? unPublish : publish;
         }
 
-        function publish() {
+        function publish() {
             var scope = $scope.$new();
             scope.publicationTime = self.item.publicationTime ? moment(self.item.publicationTime) : moment();
 
             scope.submit = function () {
                 var time = moment(scope.publicationTime, timeFormat).format();
-                
+
                 var ctx = usecaseAdapterFactory(scope);
                 ctx.data = {
                     id: self.item.id,
@@ -130,7 +97,7 @@
                 };
                 updateCatalogItem(ctx);
             };
-            
+
             scope.cancel = editModeRenderer.close;
 
             editModeRenderer.open({
@@ -156,19 +123,32 @@
         }
     }
 
-    function BinBlogDirective() {
-        return {
-            restrict: 'E',
-            scope: {
-                partition: '@',
-                blogType: '@',
-                multilingual: '@',
-                count: '@'
-            },
-            controller: 'BinBlogController',
-            controllerAs: 'ctrl',
-            bindToController: true
+    function BinBlogComponent() {
+        this.bindings = {
+            partition: '@',
+            blogType: '@',
+            multilingual: '@',
+            count: '@'
         };
+
+        this.controller = ['$routeParams', 'i18n', function ($routeParams, i18n) {
+            var self = this;
+            self.partition = self.partition || '/blog/';
+            self.blogType = self.blogType || $routeParams.blogType;
+
+            this.isAllowed = function (callback) {
+                if (self.multilingual) callback(true);
+                else {
+                    i18n.getMainLanguage().then(function (mainLocale) {
+                        i18n.getExternalLocale().then(function (externalLocale) {
+                            callback(mainLocale == externalLocale);
+                        }, function () {
+                            callback(true);
+                        });
+                    });
+                }
+            };
+        }];
     }
 
     function BinBlogPreviewsDirective() {
@@ -189,95 +169,143 @@
                     settings: 'blog',
                     filters: filters
                 };
-                if(ctrl.count) settings.subset = {count:parseInt(ctrl.count)};
+                if (ctrl.count) settings.subset = {count: parseInt(ctrl.count)};
 
                 scope.searchCtrl.init(settings);
             }
         };
     }
 
-    function BinBlogAddArticleButtonDirective($templateCache, topics, activeUserHasPermission) {
-        return {
-            restrict: 'E',
-            scope: {
-                blogType: '@'
-            },
-            require: ['^^binBlog', '^^?binBlogPreviews'],
-            template: $templateCache.get('bin-blog-add-article-button.html'),
-            link: function (scope, el, attrs, ctrl) {
-                var blog = ctrl[0];
-                var previews = ctrl[1];
+    function BinBlogAddArticleButtonComponent() {
+        this.templateUrl = 'bin-blog-add-article-button.html';
 
-                if (previews) {
-                    scope.$watchCollection(function () {
-                        return previews.results;
-                    }, function (results) {
-                        if (results) scope.first = results.length == 0;
-                    });
+        this.require = {
+            blogCtrl: '^^binBlog'
+        };
+
+        this.bindings = {
+            blogType: '@'
+        };
+
+        this.controller = ['topicRegistry', 'binarta', 'addCatalogItem', function (topics, binarta, addCatalogItem) {
+            var $ctrl = this,
+                profile = binarta.checkpoint.profile,
+                profileObserver;
+
+            this.$onInit = function () {
+                profileObserver = profile.eventRegistry.observe({
+                    signedin: checkPermission,
+                    signedout: reset
+                });
+
+                function checkPermission() {
+                    profile.hasPermission('catalog.item.add') ? isPermitted() : reset();
                 }
 
-                topics(scope, 'edit.mode', function (editModeActive) {
-                    scope.editing = editModeActive;
-                });
+                checkPermission();
+            };
 
-                activeUserHasPermission({
-                    no: function () {
-                        scope.permitted = false;
-                    },
-                    yes: function () {
-                        scope.permitted = true;
-                    },
-                    scope: scope
-                }, 'catalog.item.add');
-
-                blog.isAllowed().then(function (allowed) {
-                    scope.allowed = allowed;
-
-                    if(!allowed) {
-                        blog.getMainLocale().then(function (locale) {
-                            scope.mainLocale = locale;
-                        });
+            function isPermitted() {
+                $ctrl.permitted = true;
+                listenForEditModeEvent();
+                $ctrl.blogCtrl.isAllowed(function (allowed) {
+                    $ctrl.allowed = allowed;
+                    if (allowed) $ctrl.addArticle = addArticle;
+                    else {
+                        $ctrl.addArticle = dummy;
+                        $ctrl.primaryLanguage = binarta.application.primaryLanguage();
                     }
                 });
-
-                scope.addArticle = function () {
-                    scope.working = true;
-                    blog.addArticle(scope.blogType).finally(function () {
-                        scope.working = false;
-                    });
-                };
             }
-        };
+
+            function addArticle() {
+                $ctrl.working = true;
+
+                var item = {
+                    type: 'blog',
+                    blogType: $ctrl.blogType || $ctrl.blogCtrl.blogType || 'blog',
+                    partition: $ctrl.blogCtrl.partition
+                };
+                if (!$ctrl.blogCtrl.multilingual) item.locale = 'default';
+
+                addCatalogItem({item: item, redirectToView: true, editMode: true});
+            }
+
+            function listenForEditModeEvent() {
+                topics.subscribe('edit.mode', editModeListener);
+            }
+
+            function editModeListener(editModeActive) {
+                $ctrl.editing = editModeActive;
+            }
+
+            function reset() {
+                $ctrl.permitted = false;
+                $ctrl.addArticle = dummy;
+                topics.unsubscribe('edit.mode', editModeListener);
+            }
+
+            function dummy() {
+            }
+
+            this.$onDestroy = function () {
+                reset();
+                profileObserver.disconnect();
+            };
+        }];
     }
 
-    function BinBlogDraftsDirective($templateCache, topics, activeUserHasPermission) {
-        return {
-            restrict: 'E',
-            scope: {},
-            require: '^^binBlog',
-            template: $templateCache.get('bin-blog-drafts.html'),
-            link: function (scope, el, attrs, ctrl) {
-                scope.partition = ctrl.partition;
-                if (!ctrl.multilingual) scope.locale = 'default';
+    function BinBlogDraftsComponent() {
+        this.templateUrl = 'bin-blog-drafts.html';
 
-                topics(scope, 'edit.mode', function (editModeActive) {
-                    scope.editing = editModeActive;
+        this.require = {
+            blogCtrl: '^^binBlog'
+        };
+
+        this.controller = ['topicRegistry', 'binarta', function (topics, binarta) {
+            var $ctrl = this,
+                profileObserver;
+
+            this.$onInit = function () {
+                profileObserver = binarta.checkpoint.profile.eventRegistry.observe({
+                    signedin: checkPermission,
+                    signedout: reset
                 });
 
-                activeUserHasPermission({
-                    no: function () {
-                        scope.permitted = false;
-                    },
-                    yes: function () {
-                        scope.permitted = true;
-                    },
-                    scope: scope
-                }, 'blog.drafts.view');
+                function checkPermission() {
+                    binarta.checkpoint.profile.hasPermission('blog.drafts.view') ? isPermitted() : reset();
+                }
 
-                ctrl.isAllowed().then(function (allowed) {
-                    scope.allowed = allowed;
+                checkPermission();
+            };
+
+            function isPermitted() {
+                $ctrl.permitted = true;
+                listenForEditModeEvent();
+                $ctrl.blogCtrl.isAllowed(function (allowed) {
+                    $ctrl.allowed = allowed;
+                    $ctrl.partition = $ctrl.blogCtrl.partition;
+                    if (!$ctrl.blogCtrl.multilingual) $ctrl.locale = 'default';
                 });
             }
-        };
+
+            function listenForEditModeEvent() {
+                topics.subscribe('edit.mode', editModeListener);
+            }
+
+            function editModeListener(editModeActive) {
+                $ctrl.editing = editModeActive;
+            }
+
+            function reset() {
+                $ctrl.permitted = false;
+                topics.unsubscribe('edit.mode', editModeListener);
+            }
+
+            this.$onDestroy = function () {
+                reset();
+                profileObserver.disconnect();
+            };
+        }];
     }
 })();

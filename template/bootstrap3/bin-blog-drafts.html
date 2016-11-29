@@ -1,8 +1,8 @@
-<div ng-if="allowed && permitted && editing"
+<div ng-if="$ctrl.allowed && $ctrl.permitted && $ctrl.editing"
      ng-controller="BinartaSearchController as draftsCtrl"
      ng-init="draftsCtrl.init({
         settings: 'blog',
-        filters:{partition: partition, status:'draft', locale:locale},
+        filters:{partition: $ctrl.partition, status: 'draft', locale: $ctrl.locale},
         subset:{count:20}})">
     <div class="bin-blog bin-blog-drafts" ng-if="draftsCtrl.results.length > 0">
         <div class="panel panel-default">
@@ -11,12 +11,14 @@
                 <div class="bin-draft" ng-repeat="item in draftsCtrl.results track by item.id">
                     <div class="row">
                         <div class="col-xs-12">
-                            <a i18n read-only no-locale code="{{::item.id}}" ng-href="{{::'/view' + item.id | i18nRoute}}" ng-bind="::var"></a>
+                            <a i18n read-only no-locale code="{{::item.id}}" bin-href="{{::'/view' + item.id}}"
+                               ng-bind="::var"></a>
                         </div>
                     </div>
                 </div>
                 <div class="text-center" ng-if="draftsCtrl.results.length >= 20">
-                    <button type="button" class="btn btn-link" ng-click="draftsCtrl.searchForMore()" ng-disabled="draftsCtrl.working"
+                    <button type="button" class="btn btn-link" ng-click="draftsCtrl.searchForMore()"
+                            ng-disabled="draftsCtrl.working"
                             i18n code="button.view.older.articles" read-only>
                         <span ng-if="!draftsCtrl.working"><i class="fa fa-arrow-circle-o-down fa-fw"></i></span>
                         <span ng-if="draftsCtrl.working"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
