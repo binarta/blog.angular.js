@@ -226,7 +226,7 @@
                     blogType: $ctrl.blogType || $ctrl.blogCtrl.blogType || 'blog',
                     partition: $ctrl.blogCtrl.partition
                 };
-                if (!$ctrl.blogCtrl.multilingual) item.locale = 'default';
+                item.locale = $ctrl.blogCtrl.multilingual ? binarta.application.localeForPresentation() : item.locale = 'default';
 
                 addCatalogItem({item: item, redirectToView: true, editMode: true});
             }

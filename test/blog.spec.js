@@ -365,6 +365,7 @@ describe('blog', function () {
 
         beforeEach(inject(function ($componentController, _addCatalogItem_) {
             binarta.application.profile().supportedLanguages = ['N', 'E'];
+            binarta.application.setLocaleForPresentation('E');
             addCatalogItem = _addCatalogItem_;
             blogCtrl = {
                 partition: 'partition',
@@ -508,7 +509,8 @@ describe('blog', function () {
                             item: {
                                 type: 'blog',
                                 blogType: 'blog-type',
-                                partition: 'partition'
+                                partition: 'partition',
+                                locale: 'E'
                             },
                             redirectToView: true,
                             editMode: true
