@@ -17,19 +17,19 @@ describe('blog', function () {
         scope = {};
     }));
 
-    it('blog searchSettings are in config', function () {
+    fit('blog searchSettings are in config', function () {
         expect(config.searchSettings).toEqual({
             blog: {
-                entity:'catalog-item',
-                context:'search',
-                filters:{
-                    type:'blog',
+                entity: 'catalog-item',
+                context: 'search',
+                filters: {
+                    type: 'blog',
                     sortings: [
-                        {on:'publicationTime', orientation:'desc'}
+                        {on: 'publicationTime', orientation: 'desc'}
                     ]
                 },
-                autosearch:true,
-                subset:{count:12},
+                autosearch: true,
+                subset: {count: 12},
                 noMoreResultsNotification: false
             }
         });
@@ -364,7 +364,7 @@ describe('blog', function () {
         var $ctrl, addCatalogItem, blogCtrl;
 
         beforeEach(inject(function ($componentController, _addCatalogItem_) {
-            binarta.application.profile().supportedLanguages = ['N', 'E'];
+            binarta.application.setProfile({supportedLanguages: ['N', 'E']});
             binarta.application.setLocaleForPresentation('E');
             addCatalogItem = _addCatalogItem_;
             blogCtrl = {
@@ -702,7 +702,7 @@ angular.module('blog.types', [])
     .factory('blogTypesLoader', BlogTypeLoaderStubFactory);
 
 function BlogTypeLoaderStubFactory() {
-    return function() {
+    return function () {
         return ['blog-type-1', 'blog-type-2'];
     }
 }

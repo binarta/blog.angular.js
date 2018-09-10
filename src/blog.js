@@ -39,7 +39,8 @@
         .component('binBlog', new BinBlogComponent())
         .component('binBlogAddArticleButton', new BinBlogAddArticleButtonComponent())
         .component('binBlogDrafts', new BinBlogDraftsComponent())
-        .directive('binBlogPreviews', BinBlogPreviewsDirective);
+        .directive('binBlogPreviews', BinBlogPreviewsDirective)
+        .run(['binarta', '$rootScope', 'editModeRenderer', '$templateCache', InstallPublicationTimePrompt]);
 
     angular.module('blog.controllers', ['blog.types'])
         .controller('BinBlogPostController', ['$scope', '$templateCache', 'editModeRenderer', 'updateCatalogItem', 'usecaseAdapterFactory', 'moment', BinBlogPostController])
@@ -307,5 +308,29 @@
                 profileObserver.disconnect();
             };
         }];
+    }
+
+    function InstallPublicationTimePrompt(binarta, $scope, editModeRenderer, $templateCache) {
+        binarta.schedule(function() {
+            binarta.publisher.ui.promptForPublicationTime = function (response, timestamp) {
+                var scope = $scope.$new();
+                scope.publicationTime = timestamp ? moment(timestamp) : moment();
+
+                scope.submit = function () {
+                    editModeRenderer.close();
+                    response.success(scope.publicationTime);
+                };
+
+                scope.cancel = function () {
+                    editModeRenderer.close();
+                    response.cancel();
+                };
+
+                editModeRenderer.open({
+                    template: $templateCache.get('bin-blog-update-status.html'),
+                    scope: scope
+                });
+            };
+        });
     }
 })();
