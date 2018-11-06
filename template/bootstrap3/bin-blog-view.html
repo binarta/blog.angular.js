@@ -7,24 +7,28 @@
                     <article class="bin-article">
 
                         <bin-edit>
-                            <bin-edit-actions>
-                                <bin-edit-action action="blog.updateStatus()">
-                                        <span i18n code="blog.article.{{blog.item.status == 'draft' ? 'publish' : 'unpublish'}}.button"
-                                              watch-on-code read-only ng-bind="var"></span>
-                                </bin-edit-action>
-                                <li checkpoint-permission-for="catalog.item.remove" ng-show="permitted"
-                                    i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
-                                    <button type="button" class="bin-link bin-link-danger"
-                                            ng-controller="RemoveItemFromCatalogController"
-                                            ng-init="init({redirect:blog.item.partition})"
-                                            ng-click-confirm="submit(blog.item.id)"
-                                            confirm-message="{{::var}}"
-                                            ng-if="::var"
-                                            ng-disabled="working">
-                                        <span i18n code="blog.article.remove.button" read-only ng-bind="::var"></span>
-                                    </button>
-                                </li>
-                            </bin-edit-actions>
+                            <bin-actions>
+                                <bin-action-group>
+                                    <bin-action
+                                            bin-action-type="expression"
+                                            bin-action-expression="blog.updateStatus()">
+                                            <span i18n code="blog.article.{{blog.item.status == 'draft' ? 'publish' : 'unpublish'}}.button"
+                                                  watch-on-code read-only ng-bind="var"></span>
+                                    </bin-action>
+                                    <li checkpoint-permission-for="catalog.item.remove" ng-show="permitted"
+                                        i18n code="blog.article.remove.confirm" default="Are you sure?" read-only>
+                                        <button type="button" class="bin-link bin-link-danger"
+                                                ng-controller="RemoveItemFromCatalogController"
+                                                ng-init="init({redirect:blog.item.partition})"
+                                                ng-click-confirm="submit(blog.item.id)"
+                                                confirm-message="{{::var}}"
+                                                ng-if="::var"
+                                                ng-disabled="working">
+                                            <span i18n code="blog.article.remove.button" read-only ng-bind="::var"></span>
+                                        </button>
+                                    </li>
+                                </bin-action-group>
+                            </bin-actions>
                             <bin-edit-header>
                                 <div class="bin-article-image-wrapper">
                                     <img class="img-responsive" bin-image="images{{::blog.item.id}}/cover.img" alt="blog post cover image" seo-image>

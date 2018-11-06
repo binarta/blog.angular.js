@@ -16,7 +16,7 @@
     "binarta.catalog.angular": "2.*.*",
     "binarta.toggle.edit.mode.angular": "1.*.*",
     "binarta.usecase.adapter.angular": "0.*.*",
-    "binarta.edit.angular": "0.*.*",
+    "binarta.edit.angular": "^1.0.0",
     "binarta.notifications.angular": "1.*.*"
   },
   "devDependencies": {
