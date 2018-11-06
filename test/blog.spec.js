@@ -17,7 +17,7 @@ describe('blog', function () {
         scope = {};
     }));
 
-    fit('blog searchSettings are in config', function () {
+    it('blog searchSettings are in config', function () {
         expect(config.searchSettings).toEqual({
             blog: {
                 entity: 'catalog-item',

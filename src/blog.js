@@ -1,6 +1,6 @@
 (function () {
     angular.module('blog', ['ngRoute', 'config', 'blog.controllers', 'i18n', 'catalog', 'momentx', 'toggle.edit.mode',
-        'angular.usecase.adapter', 'bin.edit', 'notifications', 'binarta-checkpointjs-angular1', 'binarta-applicationjs-angular1'])
+        'angular.usecase.adapter', 'bin.edit', 'notifications', 'binarta-checkpointjs-angular1', 'binarta-applicationjs-angular1', 'binarta-publisherjs-angular1'])
         .config(['$routeProvider', 'configProvider', function ($routeProvider, configProvider) {
             $routeProvider
                 .when('/add/blog', {templateUrl: 'partials/blog/add.html'})
