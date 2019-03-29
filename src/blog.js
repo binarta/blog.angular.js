@@ -6,17 +6,7 @@
                 .when('/add/blog', {templateUrl: 'partials/blog/add.html'})
                 .when('/:locale/add/blog', {templateUrl: 'partials/blog/add.html'})
                 .when('/blog/add', {templateUrl: 'partials/blog/add.html'})
-                .when('/:locale/blog/add', {templateUrl: 'partials/blog/add.html'})
-                .when('/blog', {templateUrl: 'partials/blog/index.html'})
-                .when('/:locale/blog', {templateUrl: 'partials/blog/index.html'})
-                .when('/blog/:blogType', {
-                    templateUrl: 'partials/blog/index.html',
-                    controller: ['$scope', '$routeParams', BlogTypeController]
-                })
-                .when('/:locale/blog/:blogType', {
-                    templateUrl: 'partials/blog/index.html',
-                    controller: ['$scope', '$routeParams', BlogTypeController]
-                });
+                .when('/:locale/blog/add', {templateUrl: 'partials/blog/add.html'});
 
             configProvider.add({
                 searchSettings: {
@@ -45,8 +35,7 @@
     angular.module('blog.controllers', ['blog.types'])
         .controller('BinBlogPostController', ['$scope', '$templateCache', 'editModeRenderer', 'updateCatalogItem', 'usecaseAdapterFactory', 'moment', BinBlogPostController])
         .controller('AddBlogController', ['$scope', 'blogTypesLoader', AddBlogController])
-        .controller('BlogTypesController', ['$scope', 'blogTypesLoader', BlogTypesController])
-        .controller('BlogTypeController', ['$scope', '$routeParams', BlogTypeController]);
+        .controller('BlogTypesController', ['$scope', 'blogTypesLoader', BlogTypesController]);
 
     function AddBlogController($scope, blogTypesLoader) {
         $scope.blogTypes = blogTypesLoader();
@@ -54,10 +43,6 @@
 
     function BlogTypesController($scope, blogTypesLoader) {
         $scope.blogTypes = blogTypesLoader();
-    }
-
-    function BlogTypeController($scope, $routeParams) {
-        $scope.blogType = $routeParams.blogType;
     }
 
     function BinBlogPostController($scope, $templateCache, editModeRenderer, updateCatalogItem, usecaseAdapterFactory, moment) {

@@ -55,18 +55,6 @@ describe('blog', function () {
         }));
     });
 
-    describe('BlogTypeController', function () {
-        var blogType = 'foo';
-
-        beforeEach(inject(function ($controller) {
-            ctrl = $controller('BlogTypeController', {$scope: scope, $routeParams: {blogType: blogType}})
-        }));
-
-        it('should expose blog type on scope', function () {
-            expect(scope.blogType).toEqual(blogType);
-        });
-    });
-
     describe('BinBlog component', function () {
         beforeEach(inject(function ($componentController) {
             ctrl = $componentController('binBlog');
